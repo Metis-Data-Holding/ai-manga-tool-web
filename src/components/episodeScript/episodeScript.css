@@ -1,0 +1,558 @@
+.sp-input {
+	overflow: hidden;
+	background: #ffffff;
+	padding-left: 16rpx;
+	border: 6rpx solid #8240FA;
+	margin-top: 16rpx;
+}
+
+.flex-c-c {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+}
+
+.flex-c-c-column {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.script-top-bg {
+	width: 96%;
+	height: 112rpx;
+	flex-shrink: 0;
+	background: #FFFFFF;
+	justify-content: flex-start;
+	margin-top: 48rpx;
+	border-radius: 24rpx;
+	position: relative;
+	overflow: hidden;
+}
+
+.script-top-left-bg {
+	width: 17%;
+	height: 100%;
+	position: relative;
+}
+
+.script-top-center-bg {
+	flex: 1;
+	height: 100%;
+	position: relative;
+	box-shadow: 0px 2rpx 4rpx 0px rgba(0, 0, 0, 0.5);
+}
+
+.script-top-right-bg {
+	width: 32.3%;
+	height: 100%;
+	position: relative;
+}
+
+.script-top-left-item {
+	width: 27.6%;
+	height: 64.3%;
+	border-radius: 8rpx;
+	background: linear-gradient(0deg, #F3F3F3, #F3F3F3), #FFFFFF;
+	font-size: 28rpx;
+	font-size: #333333;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.script-top-left-item:hover {
+	opacity: 0.8;
+}
+
+.script-top-center-item {
+	/* width: 20%; */
+	width: 280rpx;
+	height: 64.3%;
+	border-radius: 8rpx;
+	background: linear-gradient(0deg, #F3F3F3, #F3F3F3), #FFFFFF;
+	font-size: 28rpx;
+	font-size: #333333;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.script-top-center-item:hover {
+	opacity: 0.8;
+}
+
+.script-top-right-item {
+	/* width: 31.1%; */
+	width: 268rpx;
+	height: 64.3%;
+	border-radius: 8rpx;
+	background: linear-gradient(0deg, #F3F3F3, #F3F3F3), #FFFFFF;
+	font-size: 28rpx;
+	font-size: #333333;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.script-top-right-item:hover {
+	opacity: 0.8;
+}
+
+.blueColor {
+	background: linear-gradient(0deg, #409EFF, #409EFF), #FFFFFF;
+}
+
+.yellowColor {
+	background: linear-gradient(90deg, #F8BA38 0%, #FFCA5A 100%);
+}
+
+.script-item {
+	flex-direction: row;
+	display: flex;
+	margin-bottom: 24rpx;
+	width: 96%;
+	background: #FFFFFF;
+	border-radius: 24rpx;
+	align-items: flex-start;
+	justify-content: center;
+	position: relative;
+	/* height: 640rpx; */
+	/* 改为最小高度，让内容撑开 */
+	min-height: 640rpx;
+}
+
+.script-item-left-bg {
+	padding-top: 24rpx;
+	width: 17%;
+	height: 100%;
+	border-right: 2rpx solid rgba(0, 0, 0, 0.3);
+	/* padding: 24rpx 0; */
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+/* 顶部标题区 */
+.left-header {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	padding-left: 5.5%;
+	margin-bottom: 24rpx;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+
+.select-icon {
+	width: 50rpx;
+	height: 50rpx;
+	cursor: pointer;
+}
+
+.episode-title {
+	color: #333333;
+	font-size: 32rpx;
+	margin-left: 24rpx;
+	font-weight: bold;
+}
+
+/* 按钮行通用容器 */
+.control-row {
+	display: flex;
+	justify-content: space-between;
+	/* 左右分布 */
+	align-items: center;
+	width: 100%;
+	padding: 0 32rpx;
+	/* 左右留白 */
+	box-sizing: border-box;
+	margin-bottom: 24rpx;
+}
+
+/* 底部行特殊处理 */
+.control-row.footer {
+	margin-bottom: 28rpx;
+}
+
+/* 通用按钮样式 */
+.script-btn {
+	width: 48%;
+	/* 两个按钮一行，中间留隙 */
+	height: 84rpx;
+	border-radius: 8rpx;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 28rpx;
+	color: #333333;
+	background: linear-gradient(0deg, #E7E7E7, #E7E7E7), linear-gradient(90deg, #F8BA38 0%, #FFCA5A 100%), #409EFF;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.script-btn:hover {
+	filter: brightness(0.95);
+}
+
+/* 编辑模式下的白色背景状态 */
+.script-btn.white-bg {
+	background: #FFFFFF !important;
+	transition: none;
+	/* 移除过渡，避免颜色突变 */
+}
+
+/* 删除按钮 */
+.btn-delete {
+	color: #FF5757 !important;
+	background: transparent !important;
+	border: 2rpx solid #FF5757;
+	box-sizing: border-box;
+}
+
+/* 生成故事板按钮 */
+.btn-generate {
+	background: linear-gradient(90deg, #F8BA38 0%, #FFCA5A 100%) !important;
+	font-weight: 500;
+}
+
+/* Loading 占位容器，确保布局对齐 */
+.loading-placeholder {
+	width: 48%;
+	display: flex;
+	justify-content: center;
+}
+
+.script-item-center-bg {
+	flex: 1;
+	/* height: 100%; */
+	position: relative;
+	align-items: center;
+	margin-left: 17%;
+	/* 左侧宽度 */
+	/* min-height: 640rpx; */
+	/* 保持一致高度 */
+	/* padding-bottom: 24rpx; */
+	/* 底部留白 */
+	justify-content: flex-start;
+	padding-top: 24rpx;
+}
+
+.script-item-right-bg {
+	width: 32.3%;
+	/* height: 100%; */
+	/* min-height: 640rpx; */
+	position: relative;
+	border-left: 2rpx solid rgba(0, 0, 0, 0.3);
+	/* padding-bottom: 24rpx; */
+	padding-top: 24rpx;
+}
+
+/* 资产容器 */
+.assets-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	width: 96%;
+	height: auto;
+	flex: 1;
+}
+
+/* 每一行资产（角色/场景/道具） */
+.asset-column {
+	width: 100%;
+	/* background: transparent; */
+	display: flex;
+	flex-direction: row;
+	/* 改为横向，左边是标签，右边是列表 */
+	align-items: center;
+	/* 顶部对齐 */
+	min-height: 96rpx;
+	/* 最小高度 */
+	padding: 12rpx;
+	box-sizing: border-box;
+	margin-bottom: 12rpx;
+	background: #F3F3F3;
+	/* 每一行的浅灰底色，区分行 */
+	border-radius: 16rpx;
+}
+
+/* 左侧标签占位 */
+.asset-label-box {
+	width: 46rpx;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	/* padding: 16rpx 8rpx; */
+	margin-right: 12rpx;
+	border-radius: 12rpx;
+	/* height: 100%; */
+	/* 撑满高度 */
+	min-height: 120rpx;
+}
+
+/* 标签文字竖排 */
+.asset-label-text {
+	font-size: 24rpx;
+	color: #FFFFFF;
+	font-weight: bold;
+	writing-mode: vertical-lr;
+	/* 竖排文字 */
+	letter-spacing: 4rpx;
+}
+
+/* 不同类型的标签颜色 */
+.label-roles {
+	background: linear-gradient(0deg, #764BEE, #764BEE), linear-gradient(0deg, #409EFF, #409EFF), #8240FA;
+}
+
+.label-scenes {
+	background: linear-gradient(0deg, #F78854, #F78854), linear-gradient(0deg, #409EFF, #409EFF), #8240FA;
+}
+
+.label-props {
+	background: linear-gradient(0deg, #10BC00, #10BC00), linear-gradient(0deg, #409EFF, #409EFF), #8240FA;
+}
+
+
+/* 资产列表：横向排列，自动换行 */
+.asset-list {
+	display: flex;
+	flex-direction: row;
+	/* flex-wrap: wrap; */
+	/* 允许换行 */
+	align-content: flex-start;
+	gap: 16rpx;
+	padding: 0px 8rpx;
+	flex: 1;
+	overflow-x: auto;
+	/* 占满剩余宽度 */
+	overflow: visible;
+}
+
+/* 资产卡片 */
+.asset-card {
+	width: 130rpx;
+	height: 130rpx;
+	background: linear-gradient(0deg, #E7E7E7, #E7E7E7), #FFFFFF;
+	border-radius: 16rpx;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+	/* overflow: hidden; */
+	box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+	transition: all 0.2s;
+	cursor: pointer;
+	z-index: 1;
+	/* 默认层级 */
+	flex-shrink: 0;
+}
+
+/* 悬浮时提高层级，确保弹窗不被遮挡 */
+.asset-card.hover-active {
+	z-index: 1000;
+}
+
+.asset-card:hover {
+	transform: translateY(-2rpx);
+	box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.2);
+}
+
+.asset-cover {
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+
+.asset-name-text-bg {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 30%;
+	background: rgba(0, 0, 0, 0.8);
+	border-end-start-radius: 16rpx;
+	border-end-end-radius: 16rpx;
+}
+
+.asset-name-text {
+	font-size: 20rpx;
+	color: #FFFFFF;
+	width: 95%;
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	/* margin-top: 6rpx; */
+	line-height: 100%;
+}
+
+/* 选中遮罩 (已移除勾选按钮，改为高亮边框或其他效果，或者仅用于内部逻辑) */
+/* 如果不需要勾选交互，可以移除遮罩样式，或者改为选中高亮边框 */
+/* .asset-card.selected {
+    border: 3rpx solid #F8BA38; 
+} */
+
+
+/* 删除按钮 */
+.del-btn {
+	position: absolute;
+	top: -8rpx;
+	right: -8rpx;
+	width: 24rpx;
+	height: 24rpx;
+	z-index: 2;
+	background: rgba(255, 255, 255, 0.9);
+	border-bottom-left-radius: 8rpx;
+	cursor: pointer;
+}
+
+/* 添加按钮 */
+.add-card {
+	width: 130rpx;
+	height: 130rpx;
+	border: 2rpx dashed #ccc;
+	/* background: transparent; */
+	justify-content: center;
+	box-shadow: none;
+	cursor: pointer;
+	display: flex !important;
+	/* 强制一直显示 */
+}
+
+.add-card:hover {
+	/* border-color: #F8BA38; */
+	background: rgba(248, 186, 56, 0.05);
+}
+
+/* 头部操作按钮样式 */
+.action-btn-group {
+	display: flex;
+	align-items: center;
+	margin-right: 3%;
+}
+
+.action-btn {
+	font-size: 28rpx;
+	color: #333333;
+	margin-left: 24rpx;
+	cursor: pointer;
+}
+
+.action-btn.save {
+	color: #F8BA38;
+	/* 保存按钮颜色 */
+	font-weight: bold;
+}
+
+.action-btn.cancel {
+	color: #666666;
+}
+
+/* 悬浮详情弹窗 */
+.asset-detail-popup {
+	position: absolute;
+	bottom: 140rpx;
+	/* 卡片高度上方 */
+	left: 50%;
+	transform: translateX(-50%);
+	width: 720rpx;
+	background: #111111;
+	border-radius: 12rpx;
+	/* padding: 16rpx; */
+	box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.3);
+	z-index: 999;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	pointer-events: auto;
+}
+
+/* 当卡片在第一行或需要向下显示时，使用这个类 */
+.asset-detail-popup.popup-bottom {
+	bottom: auto;
+	top: 140rpx;
+}
+
+/* 弹窗小三角 */
+.asset-detail-popup::after {
+	content: '';
+	position: absolute;
+	bottom: -12rpx;
+	left: 50%;
+	transform: translateX(-50%);
+	border-width: 12rpx 12rpx 0;
+	border-style: solid;
+	border-color: #111111 transparent transparent;
+}
+
+/* 向下的弹窗小三角 */
+.asset-detail-popup.popup-bottom::after {
+	bottom: auto;
+	top: -12rpx;
+	border-width: 0 12rpx 12rpx;
+	border-color: transparent transparent #111111;
+}
+
+.popup-cover {
+	margin-top: 1%;
+	width: 98%;
+	height: 380rpx;
+	/* 大图高度 */
+	background: linear-gradient(0deg, #999999, #999999), linear-gradient(0deg, #F7F7F7, #F7F7F7), rgba(0, 0, 0, 0.2);
+	border-radius: 8rpx;
+	overflow: hidden;
+	position: relative;
+}
+
+.popup-cover>image {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.popup-footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	padding: 16rpx;
+}
+
+.popup-tag {
+	padding: 4rpx 20rpx;
+	border-radius: 20rpx;
+	font-size: 20rpx;
+	color: #fff;
+	margin-right: 12rpx;
+}
+
+.popup-name {
+	font-size: 32rpx;
+	color: #fff;
+	font-weight: bold;
+	flex: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.popup-del-btn {
+	background: #FF5757;
+	color: #fff;
+	font-size: 20rpx;
+	padding: 4rpx 20rpx;
+	border-radius: 8rpx;
+	cursor: pointer;
+}

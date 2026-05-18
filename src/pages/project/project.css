@@ -1,0 +1,189 @@
+page{
+		height: 100%;
+		width: 100%;
+		background-color: #F3F3F3;
+	}
+
+	.sp-item{
+		display: inline-block;
+		width: 192rpx;
+		height: 72rpx;
+		justify-content: center;
+		align-items: center;
+		margin-right: 4rpx;
+	}
+	.sp-input{
+		overflow: hidden;
+		background: #ffffff;
+		padding-left: 16rpx; 
+		border: 6rpx solid #8240FA;
+	}
+
+	.content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+		width: 100%;
+	}
+	.project-content{
+		margin-left: 4rpx; 
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		width: 100%;
+		flex: 1; 
+		height: 100%;
+		padding-left: 48rpx;
+	}
+	.projectItem{
+		 float: left; 
+		 width: 408rpx;
+		 height: 626rpx;
+		 display: flex;
+		 flex-direction: column;
+		position: relative;
+		justify-content: flex-start;
+		align-items: center;
+		margin-top: 24rpx;
+		background: #FFFFFF;
+		flex-shrink: 0;
+		box-sizing: border-box;
+		border-radius: 24rpx;
+		margin-right: 40rpx;
+		transition: background-color 0.3s ease-in-out;
+	}
+	.projectItem:hover{
+		background-color: #FFE3AF;
+	}
+	.projectItem .deleteIcon{
+		width: 30px;
+		height: 30px;
+		position: absolute;
+		top: 12px;
+		right: 12px;
+		z-index: 10;
+		cursor: pointer;
+		visibility: hidden;
+	}
+	.projectItem:hover .deleteIcon{
+		visibility: visible;
+	}
+	.resItem{
+		margin-left: 24rpx; 
+		float: left; 
+		width: 344rpx;
+		height: 440rpx;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-top: 24rpx;
+		background: #FFFFFF;
+		flex-shrink: 0;
+		box-sizing: border-box;
+		border-radius: 24rpx;
+		box-shadow: 0px 2rpx 4rpx 0px rgba(0, 0, 0, 0.1);
+	}
+	.detalResItem{
+		position: relative; 
+		width: 190rpx;
+		height: 190rpx;
+		margin-top: 16rpx;
+		border-radius: 8rpx;
+		float: left;
+		flex-shrink: 0;
+		border: 4rpx solid #FCC34A; 
+		margin-right: 16rpx;
+	}
+	.fullButton{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		top: 12rpx;
+		left: 12rpx;
+		background: rgba(0, 0, 0, 0.4);
+		width: 80rpx;
+		height: 40rpx;
+		border-radius: 8rpx;
+		font-size: 20rpx;
+		color: #FFFFFF;
+	}
+
+
+	.resOpButton{
+		width: 212rpx;
+		height: 64rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 28rpx;
+		color: #666666;
+		background-color: #E7E7E7;
+	}
+	.titleText{
+		font-size: 48rpx;
+		font-weight: bold;
+		color: #333333;
+		margin-top: 48rpx;
+	}
+	.createProButton{
+		width: 280rpx;
+		height: 72rpx;
+		border-radius: 16rpx;
+		color: #333333;
+		background-color: #F8BA38;
+		font-size: 28rpx;
+		font-weight: 500;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0;
+	}
+	.timeButton{
+		background-color: transparent;
+		color: #333333;
+		font-size: 28rpx;
+		font-weight: 500;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 240rpx;
+		height: 72rpx;
+		margin-right: 40rpx;
+	}
+	.statusButton{
+		width: 288rpx;
+		height: 72rpx;
+		margin: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 16rpx 0px 0px 16rpx;
+		color: #333333;
+		font-size: 32rpx;
+		font-weight: 500;
+	}
+	.statusButton1{
+		width: 288rpx;
+		height: 72rpx;
+		margin: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 0px 16rpx 16rpx 0px;
+		color: #333333;
+		font-size: 32rpx;
+		font-weight: 500;
+	}
+	.leftButton{
+		width: 432rpx;
+		height: 80rpx;
+		border-radius: 16rpx;
+		margin: 0;
+		margin-bottom: 16rpx;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+	}

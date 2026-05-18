@@ -1,0 +1,46 @@
+{
+	"pages": [
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "AI漫剧工具",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/project/project",
+			"style": {
+				"navigationBarTitleText": "AI漫剧工具",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/cameraPass/cameraPass",
+			"style": {
+				"navigationBarTitleText": "AI漫剧工具",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/cameraContent/cameraContent",
+			"style": {
+				"navigationBarTitleText": "AI漫剧工具",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/storyBoard/storyBoard",
+			"style": {
+				"navigationBarTitleText": "AI漫剧工具",
+				"navigationStyle": "custom"
+			}
+		}
+
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "AI漫剧工具",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	}
+}

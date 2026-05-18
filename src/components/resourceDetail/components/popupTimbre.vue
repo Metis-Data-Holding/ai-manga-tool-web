@@ -1,0 +1,302 @@
+<template>
+    <Teleport to="body">
+        <view>
+            <view class="popup-timbre">
+                <view style="display: flex;align-items: center;justify-content: space-between;">
+                    <view class="headTitle">选择音色</view>
+
+                    <view style="width: 240px;">
+                        <uni-search-bar placeholder="请输入" bgColor="#F3F3F3" @confirm="handleSearch"
+                            cancelButton="none" />
+                    </view>
+                </view>
+
+                <view class="resourceList">
+                    <view class="item" v-for="(item, index) in [1, 2, 3, 4, 5, 6]" :key="index"
+                        @click="state.selectedIndex = index">
+                        <image v-if="item.url" :src="item.url" mode="aspectFill" class="img"></image>
+                        <view :class="['checkbox', { 'checked': index === state.selectedIndex }]"></view>
+                        <view class="preview" style="top: 8px;" @click.stop="() => { }">
+                            <image src="/static/audioPreview.png" mode="widthFix" style="width: 16px;height: 16px;">
+                            </image>
+                            <text>试听</text>
+                        </view>
+                        <view class="bottom">
+                            <view class="title">音色名称</view>
+                            <view class="desc">青年男声，中音域，音色沉稳，语速适中</view>
+                        </view>
+                    </view>
+                </view>
+
+                <view class="footer">
+                    <view class="btn" @click="handleClose">取消</view>
+                    <view class="btn light" @click="handleConfirm">确定</view>
+                </view>
+            </view>
+        </view>
+        <view class="mask"></view>
+    </Teleport>
+</template>
+
+<script setup name="popupTimbre">
+import { reactive, ref, computed } from "vue";
+const emit = defineEmits(["close", "confirm"]);
+const props = defineProps({
+    show: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
+});
+
+const state = reactive({
+    selectedIndex: 0,
+});
+
+const handleSearch = (val) => {
+    console.log(val)
+}
+
+const handleConfirm = () => {
+    emit("confirm",{})
+    handleClose()
+    uni.showToast({
+        title: "功能待开发",
+        icon: "none",
+        duration: 2000
+    })
+}
+
+const handleClose = () => {
+    emit("close")
+}
+
+</script>
+<style scoped lang="scss">
+.mask {
+    position: fixed;
+    z-index: 98;
+    background: rgba(0, 0, 0, 0.6);
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.popup-timbre {
+    border-width: 0px;
+    position: fixed;
+    z-index: 99;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 908px;
+    height: 60vh;
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    .headTitle {
+        font-size: 20px;
+        font-weight: 500;
+        color: #333;
+        text-align: left;
+    }
+}
+
+.resourceList {
+    overflow-y: auto;
+    flex: 1;
+
+    .holder {
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 1px dashed #666;
+    }
+
+    .item {
+        display: inline-block;
+        width: 160px;
+        height: 160px;
+        border-radius: 8px;
+        background: #999999;
+        position: relative;
+        margin-top: 12px;
+        margin-right: 8px;
+        overflow: hidden;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 32px;
+            height: 32px;
+            background-image: url("/static/timbre_white.png");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100% 100%;
+        }
+
+        .img {
+            width: 100%;
+            height: 100%;
+        }
+
+        &:hover {
+            .bottom {
+                height: 80px;
+                text-align: left;
+            }
+
+            .bottom .desc {
+                visibility: visible;
+            }
+        }
+
+        .bottom {
+            padding: 0 8px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 30px;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+            overflow: hidden;
+
+            .title {
+                line-height: 30px;
+                font-size: 16px;
+                color: #fff;
+            }
+
+            .desc {
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                /* 限制行数 */
+                font-size: 12px;
+                font-weight: normal;
+                line-height: 125%;
+                visibility: hidden;
+                color: #999999;
+                overflow: hidden;
+            }
+        }
+
+        .preview {
+            cursor: pointer;
+            width: 48px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background-color: #fff;
+            color: #333;
+            font-size: 12px;
+        }
+
+        .checkbox {
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            box-sizing: border-box;
+            border: 0.5px solid #ffffff;
+            position: absolute;
+            top: 8px;
+            left: 8px;
+
+            &.checked {
+                background: #409eff;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    border-left: 2px solid #fff;
+                    border-bottom: 2px solid #fff;
+                    transform: rotate(-45deg) translate(-16%, -90%);
+                    transform-origin: center;
+                    top: 50%;
+                    left: 50%;
+                    width: 9px;
+                    height: 4px;
+                }
+            }
+        }
+
+        .icon-close {
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #FF5757;
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            z-index: 10;
+
+            &::before,
+            &::after {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                content: "";
+                width: 12px;
+                height: 2px;
+                background-color: #fff;
+            }
+
+            &::before {
+                transform: translate(-50%, -50%) rotate(45deg);
+            }
+
+            &::after {
+                transform: translate(-50%, -50%) rotate(-45deg);
+            }
+        }
+    }
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    .btn {
+        margin-top: 12px;
+        cursor: pointer;
+        width: 160px;
+        height: 36px;
+        line-height: 36px;
+        text-align: center;
+        border-radius: 5px;
+        color: #333;
+        background: #E7E7E7;
+        font-size: 14px;
+        font-weight: 500;
+        margin-right: 8px;
+
+        &.light {
+            background: #F8BA38;
+        }
+    }
+}
+</style>
