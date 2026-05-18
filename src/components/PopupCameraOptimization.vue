@@ -19,7 +19,7 @@
                                             <view class="textTag">
                                                 <image class="img" src="/static/desc_icon.png" mode="heightFix"></image>
                                                 <text class="text">{{ item.name }}</text>
-                                            </view>                                     
+                                            </view>
                                             <view class="textTag">
                                                 <image class="img" src="/static/history.png" mode="heightFix"></image>
                                                 <text class="text">版本</text>
@@ -94,7 +94,7 @@
                                 </view>
                                 <view :class="['item', 'agent']" v-if="state.requesting">
                                     <view class="head">Agent</view>
-                                    <view class="desc dots-animation">正在思考中</view>
+                                    <view class="desc dots-animation">正在处理中</view>
                                 </view>
                             </scroll-view>
                             <view class="actionSheet" style="position: relative;">
@@ -134,7 +134,7 @@
 </template>
 
 <script setup name="PopupCameraOptimization">
-import { reactive, ref, computed, onMounted, watch, nextTick, getCurrentInstance,onBeforeUnmount } from "vue";
+import { reactive, ref, computed, onMounted, watch, nextTick, getCurrentInstance, onBeforeUnmount } from "vue";
 import {
     doubaoCreateWord,
     geminiCreateWord,
@@ -142,7 +142,7 @@ import {
 } from '@/common/AIAgentForServer.js';
 import { APIPath, getRequest } from "@/common/APIRequest";
 import { isNull } from "@/common/Tool";
-import {debounce} from "lodash";
+import { debounce } from "lodash";
 import PopupSP from "@/components/popupSP.vue";
 
 function delay(ms) {
@@ -222,6 +222,7 @@ const handleSelectOptimizationStyle = (data) => {
 
 
 const startOptimization = async (index) => {
+    console.log(state.optimizationSPContent.includes('输出成JSON格式，包含分镜基础信息和分镜内容'))
     const item = props.data[index]
     let tempSP = JSON.stringify({
         '分镜基础信息': item.fenjinContent,
@@ -251,37 +252,60 @@ const startOptimization = async (index) => {
             content: `分镜${item.name}优化结果已完成`
         });
 
-        
+
         console.log('生成分镜结果=', result)
 
         try {
             let data = JSON.parse(result);
-            data = JSON.parse(data.choices[0].message.content);
             let videoContentSP = '';
             let fenjinContent = '';
-            Object.keys(data['分镜基础信息']).forEach(key => {
-                fenjinContent += `${key}: ${data['分镜基础信息'][key]}` + '\n'
-            })
 
-            // 拼接特定字段，再追加剩余字段
-            const keys = ['镜头序号','时长','景别运动','画面内容']
-            for (let c of data['分镜内容']) {
-                videoContentSP += `镜头${c['镜头序号']}（${c['时长']} ${c['景别运动']}） ${c['画面内容']}\n`;
-                for(let key of keys){
-                    delete c[key]
-                }
-                Object.keys(c).forEach(key => {
-                    videoContentSP += `${key}: ${c[key]}` + '\n'
+            /** JSON格式开始 */
+            if (state.optimizationSPContent.includes('输出成JSON格式，包含分镜基础信息和分镜内容')) {
+                data = JSON.parse(data.choices[0].message.content);
+                Object.keys(data['分镜基础信息']).forEach(key => {
+                    fenjinContent += `${key}: ${data['分镜基础信息'][key]}` + '\n'
                 })
+
+                // 拼接特定字段，再追加剩余字段
+                const keys = ['镜头序号', '时长', '景别运动', '画面内容']
+                for (let c of data['分镜内容']) {
+                    videoContentSP += `镜头${c['镜头序号']}（${c['时长']} ${c['景别运动']}） ${c['画面内容']}\n`;
+                    for (let key of keys) {
+                        delete c[key]
+                    }
+                    Object.keys(c).forEach(key => {
+                        videoContentSP += `${key}: ${c[key]}` + '\n'
+                    })
+                }
             }
-            
+            /** JSON格式结束 */
+            /** 普通格式开始 */
+            else {
+                let parts = data?.choices?.[0].message?.content.split('####');
+                parts = parts.map(part => part.trim()).filter(part => part !== '');
+                for (let i = 0; i < parts.length; i++) {
+                    const element = parts[i];
+                    let spParts = element.split('###');
+                    spParts = spParts.map(part1 => part1.trim()).filter(part1 => part1 !== '');
+                    console.log('分镜列表内容=', spParts)
+                    if (spParts.length >= 0) {
+                        fenjinContent = spParts[0]
+                    }
+                    if (spParts.length >= 1) {
+                        videoContentSP = spParts[1]
+                    }
+                }
+            }
+            /** 普通格式结束 */
+
             cameraListValue.value[index].videoContentSP = videoContentSP
 
-            cameraListValue.value[index].fenjinContent = fenjinContent //item.fenjinContent
+            cameraListValue.value[index].fenjinContent = fenjinContent
 
             state.chatList.push({
                 isUser: false,
-                content: fenjinContent+'\n'+ videoContentSP
+                content: fenjinContent + '\n' + videoContentSP
             });
 
             await nextTick();
@@ -382,15 +406,15 @@ const handleCover = () => {
     }
 }
 
-const handleCreateNewConext = ()=>{
+const handleCreateNewConext = () => {
     console.log('handleCreateNewConext')
     state.chatList = []
 }
 
-const computePopupHeight = debounce(()=>{
+const computePopupHeight = debounce(() => {
     let rect = document.querySelector("#cameraList").getBoundingClientRect()
     state.cameraScrollViewParams.height = rect.height
-},300,{})
+}, 300, {})
 
 onMounted(async () => {
     await nextTick();
@@ -648,10 +672,12 @@ onBeforeUnmount(() => {
         background-color: #fff;
         flex: 1;
         border: 1px solid #CCCCCC;
-        &.topRadius{
+
+        &.topRadius {
             border-radius: 8px 8px 0 0;
         }
-        &.bottomRadius{
+
+        &.bottomRadius {
             border-radius: 0 0 8px 8px;
         }
     }
@@ -703,7 +729,7 @@ onBeforeUnmount(() => {
         }
     }
 
-    .numberButton{
+    .numberButton {
         display: inline-block;
         height: 20px;
         line-height: 20px;

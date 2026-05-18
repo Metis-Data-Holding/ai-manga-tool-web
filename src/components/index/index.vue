@@ -22,10 +22,10 @@
 					<!-- <button  @click="getRongtuImage()" style="width: 240rpx;height: 72rpx;background: #F3F3F3;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;">重新匹配资产</button> -->
 					<button v-if="projectType==2" @click="selectAllVideoSP(true)" style="width: 128rpx;height: 72rpx;background: #409EFF;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #FFFFFF;margin:0;margin-left:24rpx;">全选</button>
 					<button v-if="projectType==2" @click="selectAllVideoSP(false)" style="width: 128rpx;height: 72rpx;background: #F3F3F3;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;">取消</button>
-					<!-- <button v-if="projectType != 2" style="width: 220rpx;height: 72rpx;background: #E7E7E7;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;margin-right: 16rpx;" @click="()=>cameraOptimizationPopupOpen()">
+					<button v-if="projectType != 2 && !isDemoPersonal" style="width: 220rpx;height: 72rpx;background: #E7E7E7;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;margin-right: 16rpx;" @click="()=>cameraOptimizationPopupOpen()">
 						<image style="width: 16px;height: 16px;vertical-align: middle;margin-right: 6px;" src="/static/star_icon.png" mode="heightFix"></image>
 						<text>分镜优化</text>
-					</button> -->
+					</button>
 					<button v-debounce.click="{handler:allCreateVideo,immediate:true,delay:500}" style="width: 280rpx;height: 72rpx;background: #F8BA38;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;margin-right: 16rpx;">一键生成视频</button>
 				</view>
 			</view>
@@ -230,10 +230,10 @@
 										</image>
 										<view style="display: flex;align-items: center;">								
 											<text style="font-size: 32rpx;font-weight: 500;">镜头内容</text>
-											<!-- <button v-if="projectType != 2" style="height: 60rpx;background: #E7E7E7;border-radius: 8rpx;font-size: 14px;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;display: flex;align-items: center;justify-content: center;padding: 0 8px;" @click="()=>cameraOptimizationPopupOpen(index)">
+											<button v-if="projectType != 2 && !isDemoPersonal" style="height: 60rpx;background: #E7E7E7;border-radius: 8rpx;font-size: 14px;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;display: flex;align-items: center;justify-content: center;padding: 0 8px;" @click="()=>cameraOptimizationPopupOpen(index)">
 												<image style="width: 14px;height: 14px;vertical-align: middle;margin-right: 6px;" src="/static/star_icon.png" mode="heightFix"></image>
 												<text>分镜优化</text>
-											</button> -->
+											</button>
 										</view>
 									</view>
 									<view class="col-item-content light-bg-1" style="flex: 1;width: 100%;min-height: 0;overflow: hidden;" :style="{borderRadius:projectType==2?'16rpx 0 016rpx':'0'}">
@@ -614,6 +614,8 @@
 	const projectType = computed(()=>{
 		return props.projectConfig?.type
 	})
+
+	const isDemoPersonal = store.getters.roles.includes('demo_personal')
 
 	watch(()=>props.projectConfig.projectConfig,(newVal)=>{
 		if(newVal){
@@ -1448,7 +1450,7 @@
 
 	function createVideoQueue(index){
 
-		const failToast = (errMsg)=>{	
+		const failToast = (errMsg)=>{
 			uni.showToast({
 				title: errMsg || '请求异常，请稍后重试',
 				icon: 'none',
@@ -1592,9 +1594,6 @@
 			// imageurlE:cameraItem.endCamera.rongtyResultImage??''
 		}
 
-		console.log(tempConfig,state.agentList,modelId)
-		return
-
 		if(projectType.value==2 && tempimages.length==0){
 			uni.showToast({
 				title: `分镜${cameraItem.name}未选择首帧图`,
@@ -1619,7 +1618,7 @@
 					seedance2Video(tempConfig,(data)=>{
 						cameraItem.videoStatusList.unshift({taskId:data.taskId[0],status:0});
 					},(error)=>{
-						failToast()
+						failToast(error)
 						console.error("生成视频失败", error)
 					})
 					break;
@@ -1627,7 +1626,7 @@
 					aliToVideo(tempConfig,(data)=>{
 						cameraItem.videoStatusList.unshift({taskId:data.taskId[0],status:0});
 					},(error)=>{
-						failToast()
+						failToast(error)
 						console.error("生成视频失败", error)					
 					})
 					break;
@@ -1635,7 +1634,7 @@
 					ViduQ3Video(tempConfig,(data)=>{
 						cameraItem.videoStatusList.unshift({taskId:data.taskId[0],status:0});
 					},(error)=>{
-						failToast()
+						failToast(error)
 						console.error("生成视频失败", error)					
 					})
 					break;
@@ -1659,7 +1658,7 @@
 					KirinV3OmniVideo(tempConfig,(data)=>{
 						cameraItem.videoStatusList.unshift({taskId:data.taskId[0],status:0});
 					},(error)=>{
-						failToast()
+						failToast(error)
 						console.error("生成视频失败", error)
 					})
 					break;
@@ -1672,7 +1671,7 @@
 					seedance2Video(tempConfig,(data)=>{
 						state.cameraList[index].videoStatusList.unshift({taskId:data.taskId[0],status:0});
 					},(error)=>{
-						failToast()
+						failToast(error)
 						console.error("生成视频失败", error)
 					},{
 						projectType:2
@@ -1682,7 +1681,7 @@
 					DoubaoSeedance1_5Video(tempConfig,(data)=>{
 						state.cameraList[index].videoStatusList.unshift({taskId:data?.taskId?.[0]||'', status:0});
 					},(error)=>{
-						failToast()
+						failToast(error)
 						console.error("生成视频失败", error)
 					})
 					break;
@@ -1698,7 +1697,7 @@
 					aliToVideo(tempConfig,(data)=>{
 						cameraItem.videoStatusList.unshift({taskId:data.taskId[0],status:0});
 					},(error)=>{
-						failToast()
+						failToast(error)
 						console.error("生成视频失败", error)					
 					},{type:'image'})
 					break;
@@ -1706,7 +1705,7 @@
 					KirinV3OmniVideo(tempConfig,(data)=>{
 						cameraItem.videoStatusList.unshift({taskId:data.taskId[0],status:0});
 					},(error)=>{
-						failToast()
+						failToast(error)
 						console.error("生成视频失败", error)
 					},{type:2})
 					break;
@@ -1754,9 +1753,9 @@
 	function createImageQueue(index,type){
 		const cameraItem = state.cameraList[index];
 
-		const failToast = ()=>{	
+		const failToast = (errMsg)=>{
 			uni.showToast({
-				title: '请求异常，请稍后重试',
+				title: errMsg || '请求异常，请稍后重试',
 				icon: 'none'
 			})
 		}
@@ -1803,7 +1802,7 @@
 					BananaImage(config,(data)=>{
 						state.cameraList[index].imageStatusList.unshift({taskId:data.taskId[0],status:0});
 					},(error)=>{
-						failToast();
+						failToast(errMsg);
 						console.error("生成图片失败", error)
 					})
 					break;
@@ -1811,7 +1810,7 @@
 					BananaProImage(config,(data)=>{
 						state.cameraList[index].imageStatusList.unshift({taskId:data.taskId[0],status:0});
 					},(error)=>{
-						failToast();
+						failToast(errMsg);
 						console.error("生成图片失败", error)
 					},{
 						kirin:config.modelId==22?true:false
@@ -1821,7 +1820,7 @@
 					Doubaoseedream4_5Image(config,(data)=>{
 						state.cameraList[index].imageStatusList.unshift({taskId:data.taskId[0],status:0});
 					},(error)=>{
-						failToast();
+						failToast(errMsg);
 						console.error("生成图片失败", error)
 					})
 					break;
@@ -1840,7 +1839,7 @@
 					Doubaoseedream4_5Image(config,(data)=>{
 						state.cameraList[index].imageStatusList.unshift({taskId:data.taskId[0],status:0});
 					},(error)=>{
-						failToast();
+						failToast(errMsg);
 						console.error("生成图片失败", error)
 					})
 					break;
@@ -1999,9 +1998,6 @@
 
 	//保存相机配置
 	function saveCameraConfig(config={showSuccessToast:false,checkEmpty:false}){
-		if(process.env.NODE_ENV=='development'){
-			return
-		}
 		if(state.fenjiList.length==0 || state.camerasFirstLoaded==false){
 			return
 		}
