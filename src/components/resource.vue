@@ -21,6 +21,10 @@
 					<view class="head">
 						<view class="title">项目库</view>
 						<view style="display: flex;">
+							<view @click="openAssetExtraction" class="btn"
+								style="margin-right: 20px;background-color: #F8BA38;color: #333;">
+								<text class="text">资产提炼</text>
+							</view>
 							<!-- <view @click="enableDraggable" class="btn"
 								style="margin-right: 20px;background-color: #409EFF;color: #fff;width: 100px;">
 								<text style="padding-left: 4px;">{{state.enableDraggable ? '保存排序' : '开启排序'}}</text>
@@ -95,6 +99,13 @@
 
 	<batchCreateRes v-if="state.isOpenBatchCreateRes" @close="closeBatchCreateRes" @saveSucceed="saveEditorResSucceed">
 	</batchCreateRes>
+
+	<AssetExtractionModal
+		v-if="state.isOpenAssetExtraction"
+		:project-config="props.projectConfig"
+		@close="closeAssetExtraction"
+		@imported="handleAssetExtractionImported"
+	/>
 	
 	<view v-if="state.isShowAutoUploadPop" class="auto-upload-mark">
 		<view class="auto-upload-panel" @click="()=> state.isShowAutoUploadPop = false">
@@ -158,6 +169,7 @@ import createOReditorRes from "./createOReditorRes.vue";
 import { GetProjectEpisodesList } from "../common/ProjectMgr";
 import resourceDetail from "@/components/resourceDetail/resourceDetail.vue";
 import batchCreateRes from "@/components/batchCreateRes.vue";
+import AssetExtractionModal from "@/components/AssetExtractionModal.vue";
 import { getImageSize, isNull, uploadFileToServer,checkMediaType,optimizedSortUtils,urlToFile,convertImageFormat,downloadFile } from "../common/Tool";
 import * as XLSX from 'xlsx'
 import { extractContentByCategory } from "../common/ContentByCategory";
@@ -214,6 +226,7 @@ const state = reactive({
 	curTopType: -2,
 	curepisodesId: 0,
 	curepisodesList: [],
+	isOpenAssetExtraction: false,
 	isShowAutoUploadPop:false,
 	autoUploadHover: null,
 
@@ -476,6 +489,19 @@ function startBatchCreateRes() {
 
 function closeBatchCreateRes() {
 	state.isOpenBatchCreateRes = false;
+}
+
+function openAssetExtraction() {
+	state.isOpenAssetExtraction = true;
+}
+
+function closeAssetExtraction() {
+	state.isOpenAssetExtraction = false;
+}
+
+function handleAssetExtractionImported() {
+	state.isOpenAssetExtraction = false;
+	updateResourceList(state.curResType);
 }
 
 onMounted(() => {

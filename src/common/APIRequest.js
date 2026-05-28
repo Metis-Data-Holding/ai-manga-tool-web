@@ -27,6 +27,14 @@ export const APIPath = {
 	getProjectSetting:'config/episodesProject',// 项目详情
 	updateProjectSetting:'config/episodesProject',// 更新项目
 	deleteProject:'config/episodesProject',// 删除项目
+	skillList:'config/skill/list',
+	skillInstall:'config/skill/install',
+	skillDetail:'config/skill',
+	assetExtractionSession:'config/assetExtraction/session',
+	assetExtractionScript:'config/assetExtraction/script',
+	assetExtractionDrafts:'config/assetExtraction/drafts',
+	assetExtractionChat:'config/assetExtraction/chat',
+	assetExtractionConfirm:'config/assetExtraction/confirm',
 	doubaoSeed1_6:'config/modelApi/doubaoSeed1_6',
 	seedance2Video:'config/modelApi/seedance2',
 	viduQ2Video:'config/modelApi/ViduQ2',
@@ -308,6 +316,13 @@ export function requestHeader(){
 		'Authorization': 'Bearer ' + _app.userInfoData.accessToken,
         'clientId':'e5cd7e4891bf95d1d19206ce24a7b32e'
 	}
+	return header
+}
+
+export function requestUploadHeader(){
+	const header = requestHeader()
+	delete header['Content-Type']
+	delete header['content-type']
 	return header
 }
 

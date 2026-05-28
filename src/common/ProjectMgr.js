@@ -60,6 +60,30 @@ export function GetProjectDetail(projectId,callback){
     })
 }
 
+export function UpdateProjectSetting(params, callback, errorCallback) {
+    putRequest(APIPath.updateProjectSetting, params, (data) => {
+        if (data.code == 200) {
+            callback && callback(data.data)
+        } else if (errorCallback) {
+            errorCallback(data.msg)
+        } else {
+            uni.showToast({
+                title: '保存失败:' + data.msg,
+                icon: 'none'
+            });
+        }
+    }, (error) => {
+        if (errorCallback) {
+            errorCallback(error)
+            return
+        }
+        uni.showToast({
+            title: '保存失败:' + error,
+            icon: 'none'
+        });
+    })
+}
+
 //status=0进行中 1已完成
 export function GetProjectList(pageNum,pageSize,status,callback){
     var apiPath=APIPath.getProjectList+`?pageNum=${pageNum}&pageSize=${pageSize}&status=${status}`

@@ -334,6 +334,28 @@
                                 </view>
                             </view>
                         </view>
+                        <view
+                            style="width: 100%;background: #FFFFFF;border-radius: 16rpx;flex-direction: column;padding-bottom: 32rpx;padding-top: 32rpx;margin-top: 24rpx;">
+                            <view style="display: flex;flex-direction: row;">
+                                <view class="row">
+                                    <view
+                                        style="display: flex;flex-direction: row;align-items: center;margin-left: 40rpx;">
+                                        <image src="/static/createVideo.png"
+                                            style="width: 40rpx;height: 40rpx;margin-right: 8rpx;"></image>
+                                        <text class="title">资产提炼设置</text>
+                                    </view>
+                                </view>
+                            </view>
+                            <view
+                                style="display: flex;display: flex;align-items: center;margin-top: 24rpx;margin-left: 72rpx;">
+                                <view class="title" style="margin-right: 16rpx;">提炼模型</view>
+                                <view style="width: 400rpx;">
+                                    <uni-data-select v-model="state.form.projectConfig.txtConfig.createAssets.defaultModel"
+                                        :localdata="aiModelConfig.text"
+                                        @change="(e) => { handleSelectorChange(e, 'txtConfig.createAssets.modelList') }"></uni-data-select>
+                                </view>
+                            </view>
+                        </view>
                     </scroll-view>
                 </view>
                 <!-- 故事板页签 -->
@@ -781,6 +803,21 @@ function changeRatioImage(resuitem) {
     state.form.projectConfig.pictureConfig.defaultFrame = resuitem;
 }
 
+function ensureAssetExtractionDefaultModel() {
+    const createAssets = state.form.projectConfig?.txtConfig?.createAssets
+    if (!createAssets || createAssets.defaultModel || aiModelConfig.text.length === 0) {
+        return
+    }
+    const defaultModel = aiModelConfig.text[0].value
+    createAssets.defaultModel = defaultModel
+    if (!Array.isArray(createAssets.modelList)) {
+        createAssets.modelList = []
+    }
+    if (!createAssets.modelList.includes(defaultModel)) {
+        createAssets.modelList.push(defaultModel)
+    }
+}
+
 
 const resetForm = () => {
     state.form = {
@@ -880,6 +917,7 @@ const getAIModel = () => {
         aiModelConfig.picture = data.filter(i => i.modelType == '4')
         aiModelConfig.text = data.filter(i => i.modelType == '3')
         aiModelConfig.rongtu = data.filter(i => i.modelType == '2')
+        ensureAssetExtractionDefaultModel()
 
         const videoTypeList = aiModelConfig.video = data.filter(i => i.modelType == '1')
 
