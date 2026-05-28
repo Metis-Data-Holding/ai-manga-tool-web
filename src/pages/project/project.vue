@@ -168,6 +168,7 @@
 					</block>
 				</scroll-view>
 			</view>
+			<SkillManagement v-if="state.curLeftTitleType==4" />
 		</view>
 	</view>
 	<createProject v-if="state.isOpenCreateProject"  @close="closeCreateProject" @createSucceed="createSucceed"></createProject>
@@ -185,6 +186,7 @@
 	import createOReditorRes from "../../components/createOReditorRes.vue";
 	import batchCreateRes from "../../components/batchCreateRes.vue";
 	import resourceDetail from "@/components/resourceDetail/resourceDetail.vue";
+	import SkillManagement from "@/components/SkillManagement.vue";
 	import { GetProjectList,DeleteeProject } from "../../common/ProjectMgr";
 	import { isNull } from "../../common/Tool";
 	import app from "@/App.vue";
@@ -196,7 +198,8 @@
 		leftTitle:[
 			{name:"公共库",type:1,icon:"/static/publicIcon.png"},
 			{name:"新建项目",type:3,icon:"/static/newProject.png"},
-			{name:"我的项目",type:2,icon:"/static/proNameIcon.png"}
+			{name:"我的项目",type:2,icon:"/static/proNameIcon.png"},
+			{name:"SKILL 管理",type:4,icon:"/static/projecticon.png"}
 		],
 		curLeftTitleType:2,
 		curProjectStatusType:0,
