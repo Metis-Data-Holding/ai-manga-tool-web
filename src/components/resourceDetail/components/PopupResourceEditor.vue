@@ -11,9 +11,15 @@
                     style="width: 23.2%;min-width: 320px;display: flex;flex-direction: column;align-items: center;padding: 0 8px 0 20px;box-sizing: border-box;height: 100%;">
                     <view class="headTitle">资产图片详情</view>
                     <view class="section section-sp" v-if="state.historyContent">
-                        <view class="title">
-                            <image class="image" src="/static/desc_icon.png" style="width: 16px;height: 16px;"></image>
-                            <text class="text">资产SP生图描述</text>
+                        <view style="display: flex;align-items: center;justify-content: flex-start;">
+                            <view class="title">
+                                <image class="image" src="/static/desc_icon.png" style="width: 16px;height: 16px;">
+                                </image>
+                                <text class="text">资产SP生图描述</text>
+                            </view>
+                            <view
+                                style="margin-left: 12px;padding: 0 6px;height: 28px;line-height: 28px;text-align: center;border-radius: 4px;color: rgb(104, 108, 116);font-size: 14px;background: #f4f4f5;cursor: pointer;border: 1px solid #dcdfe6;"
+                                @click="copyContent">复制内容</view>
                         </view>
                         <view class="content" style="flex: 1;display: flex;flex-direction: column;min-height: 0;">
                             <view class="info" style="flex: 1;min-height: 0;display: flex;flex-direction: column;">
@@ -36,6 +42,7 @@
                                 <view class="tag-item">模型 {{ state.historyContent.modelName || '' }}</view>
                                 <view class="tag-item">画幅 {{ state.historyContent.ratio || '' }}</view>
                                 <view class="tag-item">画质 {{ state.historyContent.resolution || '' }}</view>
+                                <view class="tag-item" v-if="state.historyContent.huafengName">画风 {{ state.historyContent.huafengName }}</view>
                             </view>
                         </view>
                     </view>
@@ -196,7 +203,7 @@ const handleImageLoad = (e) => {
 }
 
 const handleSelect = (item, index) => {
-    if(item.status!=5){
+    if (item.status != 5 || index == state.selectedIndex) {
         return
     }
     state.selectedIndex = index;
@@ -217,36 +224,47 @@ const getDetail = () => {
     getRequest(`${APIPath.aiTask}/${id}`, (resData) => {
         if (resData.code == 200) {
             try {
-                const { paramsValue, modelId, name, modelInterface } = resData.data;
+                const { paramsValue, modelId, name, modelInterface,frontExpand } = resData.data;
                 const content = JSON.parse(paramsValue);
-                switch (modelInterface) {
-                    case 'BananaTextImage': //香蕉2 //香蕉pro
-                    case 14:
-                    case 15:
-                        state.historyContent = {
-                            prompt: content.input[0]?.params?.prompt || '',
-                            ratio: content.input[0]?.params?.aspect_ratio || '',
-                            resolution: content.input[0]?.params?.resolution || '',
-                            urls: content.input[0]?.params?.image_urls || [],
-                        }
-                        break;
-                    case 'KirinV3TextImage'://可灵
-                        state.historyContent = {
-                            prompt: content.input[0]?.params?.prompt || '',
-                            ratio: content.input[0]?.params?.aspect_ratio || '',
-                            resolution: content.input[0]?.params?.resolution || '',
-                            urls: content.input[0]?.params?.image_list?.map(item => item.image) || [],
-                        }
-                        break;
-                    case 'Doubaoseedream5_0liteTextImage': //豆包seedream5.0lite 海外豆包seedream5.0lite 豆包seedream4.5 海外豆包seedream4.5
-                        const { standardRatio, level } = parseResolution(...content.size.split('x'));
-                        state.historyContent = {
-                            prompt: content.prompt || '',
-                            ratio: standardRatio,
-                            resolution: level,
-                            urls: typeof (content.image) == 'string' ? [content.image] : content.image,
-                        }
-                        break;
+                if(frontExpand){
+                    let _frontExpand = JSON.parse(frontExpand)
+                    state.historyContent = {
+                        prompt: _frontExpand.prompt,
+                        ratio: _frontExpand.ratio,
+                        resolution: _frontExpand.resolution,
+                        urls: _frontExpand.urls,
+                        huafengName: _frontExpand.huafeng?.name,
+                    }
+                }else{
+                    switch (modelInterface) {
+                        case 'BananaTextImage': //香蕉2 //香蕉pro
+                        case 14:
+                        case 15:
+                            state.historyContent = {
+                                prompt: content.input[0]?.params?.prompt || '',
+                                ratio: content.input[0]?.params?.aspect_ratio || '',
+                                resolution: content.input[0]?.params?.resolution || '',
+                                urls: content.input[0]?.params?.image_urls || [],
+                            }
+                            break;
+                        case 'KirinV3TextImage': //可灵
+                            state.historyContent = {
+                                prompt: content.input[0]?.params?.prompt || '',
+                                ratio: content.input[0]?.params?.aspect_ratio || '',
+                                resolution: content.input[0]?.params?.resolution || '',
+                                urls: content.input[0]?.params?.image_list?.map(item => item.image) || [],
+                            }
+                            break;
+                        case 'Doubaoseedream5_0liteTextImage': //豆包seedream5.0lite 海外豆包seedream5.0lite 豆包seedream4.5 海外豆包seedream4.5
+                            const { standardRatio, level } = parseResolution(...content.size.split('x'));
+                            state.historyContent = {
+                                prompt: content.prompt || '',
+                                ratio: standardRatio,
+                                resolution: level,
+                                urls: typeof (content.image) == 'string' ? [content.image] : content.image,
+                            }
+                            break;
+                    }
                 }
                 state.historyContent.modelName = name
 
@@ -254,6 +272,18 @@ const getDetail = () => {
             } catch (err) {
                 console.error('解析失败:', err);
             }
+        }
+    })
+}
+
+const copyContent = () => {
+    uni.setClipboardData({
+        data: state.historyContent.prompt,
+        success: () => {
+            uni.showToast({ title: '复制成功', icon: 'none' })
+        },
+        fail: (err) => {
+            console.error('复制失败', err)
         }
     })
 }

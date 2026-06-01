@@ -1,5 +1,6 @@
 <script>
 import { version } from 'vue';
+import store from './store'
 
 export default {
   onLaunch: function () {
@@ -8,8 +9,9 @@ export default {
     // token && uni.reLaunch({
     //   url: lastPage || '/pages/project/project'
     // })
-
-    console.log('App Launch')
+    store.commit('SET_PLATFORM',{
+      origin:location.origin
+    })
   },
   onShow: function () {
     console.log('App Show')
@@ -20,7 +22,7 @@ export default {
   },
   globalData:{
     tempPageData:{},
-    version:'1.5.0',
+    version:'1.5.3',
   },
 
   userInfoData:{

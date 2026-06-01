@@ -3,16 +3,16 @@
 		style="display: flex;flex-direction: column;width: 100%;flex:1;height:0;overflow: hidden;background: #f3f3f3;align-items: center;">
 		<view class="flex-c-c script-top-bg">
 			<view class="script-top-left-bg flex-c-c" style="width: 17%; padding: 20rpx 24rpx; box-sizing: border-box;">
-				<view @click="readNovel(2)" class="script-top-center-item blueColor flex-c-c"
-					style="width: 100%; height: 100%; color: #FFFFFF; border-radius: 8rpx;">
+				<view @click="readNovel(2)" class="script-top-center-item yellowColor flex-c-c"
+					style="width: 100%; height: 100%; border-radius: 8rpx;">
 					第一步：
-					<image style="width: 32rpx;height: 32rpx;margin-right: 16rpx;" src="/static/importIcon.png"
+					<image style="width: 32rpx;height: 32rpx;margin-right: 16rpx;" src="/static/importIcon_black.png"
 						mode="aspectFit"></image>
 					导入剧本
 				</view>
 			</view>
 			<view class="script-top-center-bg flex-c-c" style="justify-content: flex-start;">
-				<view @click="selectAllji(true)" class="script-top-left-item flex-c-c blueColor"
+				<view @click="selectAllji(true)" class="script-top-left-item flex-c-c primaryColor"
 					style="color:#FFFFFF; width: 120rpx;margin-left: 32rpx;">全选</view>
 				<view @click="selectAllji(false)" class="script-top-left-item flex-c-c"
 					style="width: 120rpx; margin: 0 16rpx;">取消</view>
@@ -21,7 +21,11 @@
 				</view>
 				<view @click="allCreateCameraSub()" class="script-top-center-item yellowColor flex-c-c"
 					style="width: auto; font-weight: 500;padding: 0px 36rpx;margin-left: auto;margin-right: 26rpx;">
-					第二步：全部生成故事板</view>
+					<text>第二步</text>
+					<image src="/static/point_icon.png" style="width: 10px;height: 14px;padding-right: 2px;margin-left: 3px;" mode="heightFix"></image>
+					<text style="padding-right: 3px">{{ state.fenjiList.length }}</text>
+					<text>全部生成故事板</text>
+					</view>
 			</view>
 			<view v-if="false" class="script-top-right-bg flex-c-c" style="justify-content: flex-start; ">
 				<view @click="selectAllAssets(true)" class="script-top-left-item flex-c-c blueColor"
@@ -37,7 +41,7 @@
 		</view>
 
 		<scroll-view style="margin-top: 24rpx;width: 100%;flex: 1;height: 0;" :scroll-y="true" :show-scrollbar="true"
-			:scroll-top="scrollTop.value" @scrolltolower="handleScrollToLower" @scroll="handleScrolll">
+			:scroll-top="state.scrollTop" @scrolltolower="handleScrollToLower" @scroll="handleScrolll">
 			<view class="flex-c-c-column" style="width: 100%;">
 				<block v-for="(item, index) in state.fenjiList" :key="index">
 					<view class="script-item"
@@ -79,9 +83,12 @@
 								<view class="script-btn" :class="{ 'white-bg': item.isHovering }"
 									@click="openfenjingSP(index)">本场故事SP</view>
 							</view>
-							<view class="control-row footer">
-								<view class="script-btn btn-delete" @click.stop="handleDeleteSelect(item)">删除</view>
-								<view class="script-btn btn-generate" v-debounce.click="{handler:()=>handleSimpleCreatesubCam(index),immediate:true,delay:500}">生成故事板
+							<view class="control-row footer" style="justify-content: flex-start;gap: 10px;">
+								<view class="script-btn btn-delete" style="width: 68px;" @click.stop="handleDeleteSelect(item)">删除</view>
+								<view class="script-btn btn-generate" style="flex:1;display: flex;align-items: center;" v-debounce.click="{handler:()=>handleSimpleCreatesubCam(index),immediate:true,delay:500}">
+									<image src="/static/point_icon.png" style="width: 10px;height: 14px;padding-right: 2px;" mode="heightFix"></image>
+									<text style="padding-right: 4px;">1</text>
+									<text>生成故事板</text>
 								</view>
 							</view>
 						</view>
@@ -229,7 +236,7 @@
 			</view>
 			<textarea :maxlength="-1" @blur="fenjingSPInput"
 				style="width: 100%;height: 100%;margin-top: 24rpx;border-radius: 16rpx;background: #F3F3F3;padding: 16rpx;"
-				:value="editable ? state.curSelectFenjingSPValue : '该智能体提示词仅调用，不可编辑'" placeholder="SP内容" :disabled="!editable.value"></textarea>
+				:value="editable ? state.curSelectFenjingSPValue : '*该智能体提示词仅调用且不可编辑'" placeholder="SP内容" :disabled="!editable.value"></textarea>
 			<view
 				style="display: flex;flex-direction: row;width: 100%;justify-content: flex-end;align-items: center;margin-top: 24rpx;">
 				<button
@@ -253,9 +260,11 @@
 		defineEmits,
 		reactive,
 		onMounted,
+		onBeforeUnmount,
 		ref,
 		computed,
-		watch
+		watch,
+		nextTick
 	} from 'vue'
 	import {
 		doubaoCreateWord,
@@ -300,11 +309,15 @@
 		projectConfig: {
 			type: Object,
 			default: {}
+		},
+		scrollTop: {
+			type: Number,
+			default: 0
 		}
 	})
 	const fileContent = ref('');
 	let fileInput = null;
-	const emits = defineEmits(["close","updateProjectSetting"])
+	const emits = defineEmits(["close","updateProjectSetting","updateScrollTop"])
 	const showImportModal = ref(false);
 
 	const state = reactive({
@@ -347,6 +360,8 @@
 		originalContents: {}, // 存储每个分集的原始内容
 
 		createCameraStatus:{}, // 存储每个分集的分镜状态,离开页面时提醒是否有进行中任务
+
+		scrollTop:0,
 	})
 
 	const editable = computed(()=>!store.getters.roles.includes('demo_personal'))
@@ -356,8 +371,6 @@
 			state.curAIVModel = newVal?.projectConfig?.txtConfig.storyboard.defaultModel || ''
 		}
 	},{deep:true,immediate:true})
-
-	const scrollTop = ref(0)
 
 	// 资产分类配置，用于循环渲染 UI
 	const assetCategories = [{
@@ -441,16 +454,26 @@
 	})
 
 	onMounted(() => {
-		scrollTop.value = uni.getStorageSync("aimanju_script_scrolltop") || 0;
 		GetAIModelList().then((modelList)=>{
 			state.curaiList = modelList.filter(item=>item.modelType==3).map(item=>({
 				value: item.id.toString(),
-				text: item.name
+				text: item.name,
+				modelInterface:item.modelInterface
 			}))
 			!state.curAIVModel && (state.curAIVModel = state.curaiList[0]?.value)
 		})
 		getEpisodesList()
 		getSPList()
+
+		nextTick(()=>{			
+			setTimeout(()=>{			
+				state.scrollTop = props.scrollTop;
+			},200)
+		})
+	})
+
+	onBeforeUnmount(() => {
+		emits('updateScrollTop',state.scrollTop)
 	})
 
 	onShow(function() {})
@@ -585,8 +608,7 @@
 	}
 
 	function handleScrolll(detail) {
-		scrollTop.value = detail.detail.scrollTop
-		uni.setStorageSync("aimanju_script_scrolltop", scrollTop.value)
+		state.scrollTop = detail.detail.scrollTop;
 	}
 
 	function getSPList() {
@@ -619,22 +641,28 @@
 			const targetSPItem = state.curfenjingSpList.find(item=>item.id==storyBoardSetting.spId)
 			targetSPItem && (storyBoardSetting.sp = targetSPItem.value)
 			
-			// 拿对应id，更新生图、融图、生视频画风SP最新值
+			// 拿对应id，更新生图、融图SP最新值
 			GetResourceList(1, 1000, 9, (resList) => {
 				const pictureSetting = projectSetting.pictureConfig; //生图 promptSp
-				const videoSetting = projectSetting.videoConfig; //生视频 rtSp
 				const rtSetting = projectSetting.rtConfig; //融图 rtSp
 
 				const pictureSPItem = resList.find(item=>item.id==pictureSetting.promptSpId)
 				pictureSPItem && (pictureSetting.promptSp = pictureSPItem.content)
 
-				const videoSPItem = resList.find(item=>item.id==videoSetting.rtSpId)
-				videoSPItem && (videoSetting.rtSp = videoSPItem.content)
-
 				if(rtSetting){
 					const rtSPItem = resList.find(item=>item.id==rtSetting.spId)
 					rtSPItem && (rtSetting.sp = rtSPItem.content)
 				}
+
+				emits('updateProjectSetting',projectSetting)
+			})
+
+			// 拿对应id，生视频画风SP最新值
+			GetResourceList(1, 1000, 31, (resList) => {
+				const videoSetting = projectSetting.videoConfig; //生视频 rtSp
+
+				const videoSPItem = resList.find(item=>item.id==videoSetting.rtSpId)
+				videoSPItem && (videoSetting.rtSp = videoSPItem.content)
 
 				emits('updateProjectSetting',projectSetting)
 			})
@@ -782,7 +810,9 @@
 		var defaultSP = globalDefaultStoryBoardSp.value
 		var curFenJi = state.fenjiList[index]
 		// var tempSP = curFenJi.sp ?? ''
-		var tempSP = curFenJi.storyBoardSp ?? ''
+		var tempSP = curFenJi.storyBoardSp ?? '';
+		let modelInterface = state.curaiList.find((item) => item.value == state.curAIVModel)?.modelInterface;
+		
 		if (isNull(tempSP)) {
 			tempSP = defaultSP
 		}
@@ -823,16 +853,14 @@
 			
 		state.fenjiList[index].loadingVisible = true
 		let requestFn;
-		switch(state.curAIVModel){
-			case '6':
-			case '18':
-			case '26':
+		switch(modelInterface){
+			case 'doubaoCreateWord': // 6 18 26
 				requestFn = doubaoCreateWord
 				break;
-			case '19':
+			case 'geminiCreateWord': // 19
 				requestFn = geminiCreateWord
 				break;
-			case '57':
+			case 'aliCreateWord': // 57
 				requestFn = aliCreateWord
 				break
 			default:
@@ -1295,7 +1323,7 @@
 				})
 				getEpisodesList(false, () => {
 					setTimeout(() => {
-						scrollTop.value = scrollTop.value + 1
+						state.scrollTop = state.scrollTop + 1
 					}, 200)
 					// sortFenjiList()
 				}, () => {

@@ -1,7 +1,6 @@
-import store from '@/store'
+import store from "@/store";
 //modelType 1视频，2融图，4生图
 export function getAiModelParamsMap() {
-
   const aiModelParamsMap = [
     {
       id: 1,
@@ -136,7 +135,7 @@ export function getAiModelParamsMap() {
       name: "阿里云百炼图生视频",
       endpointId: "",
       modelType: "1",
-      ratio: ['根据图片'],
+      ratio: ["根据图片"],
       resolution: ["720P", "1080P"],
     },
     {
@@ -144,8 +143,32 @@ export function getAiModelParamsMap() {
       name: "阿里云百炼多参生视频",
       endpointId: "",
       modelType: "1",
-      ratio: ["9:16", "16:9", "4:3", "3:4", "1:1",],
+      ratio: ["9:16", "16:9", "4:3", "3:4", "1:1"],
       resolution: ["720P", "1080P"],
+    },
+    {
+      id: 51,
+      name: "海外豆包seedance2.0-fast",
+      endpointId: "",
+      modelType: "1",
+      ratio: ["9:16", "16:9", "4:3", "3:4", "1:1", "21:9"],
+      resolution: ["480P", "720P"],
+    },
+    {
+      id: 63,
+      name: "海外Seedance2.0满血（通道1）",
+      endpointId: "",
+      modelType: "1",
+      ratio: ["9:16", "16:9", "4:3", "3:4", "1:1", "21:9"],
+      resolution: ["480P", "720P", "1080p"],
+    },
+    {
+      id: 64,
+      name: "海外Seedance2.0fast（通道1）",
+      endpointId: "",
+      modelType: "1",
+      ratio: ["9:16", "16:9", "4:3", "3:4", "1:1", "21:9"],
+      resolution: ["480P", "720P"],
     },
     {
       id: 3,
@@ -305,10 +328,10 @@ export function getAiModelParamsMap() {
     },
   ];
 
-  if (store.getters.roles.includes('demo_personal')) {
-    const s2fast = aiModelParamsMap.find(i=>i.id==16)
-    s2fast.resolution = ["480P"]
-    return aiModelParamsMap
+  if (store.getters.roles.includes("demo_personal")) {
+    const s2fast = aiModelParamsMap.find((i) => i.id == 16);
+    s2fast.resolution = ["480P"];
+    return aiModelParamsMap;
   }
-  return aiModelParamsMap
+  return aiModelParamsMap;
 }

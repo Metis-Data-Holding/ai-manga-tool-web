@@ -1,4 +1,5 @@
 import { isNull } from "./Tool"
+import CryptoJS from "crypto-js"
 import app from "@/App.vue";
 const _app = app;
 import store from '@/store/index.js'
@@ -27,14 +28,6 @@ export const APIPath = {
 	getProjectSetting:'config/episodesProject',// 项目详情
 	updateProjectSetting:'config/episodesProject',// 更新项目
 	deleteProject:'config/episodesProject',// 删除项目
-	skillList:'config/skill/list',
-	skillInstall:'config/skill/install',
-	skillDetail:'config/skill',
-	assetExtractionSession:'config/assetExtraction/session',
-	assetExtractionScript:'config/assetExtraction/script',
-	assetExtractionDrafts:'config/assetExtraction/drafts',
-	assetExtractionChat:'config/assetExtraction/chat',
-	assetExtractionConfirm:'config/assetExtraction/confirm',
 	doubaoSeed1_6:'config/modelApi/doubaoSeed1_6',
 	seedance2Video:'config/modelApi/seedance2',
 	viduQ2Video:'config/modelApi/ViduQ2',
@@ -68,6 +61,22 @@ export const APIPath = {
 	seedance2ResourcReview:'config/item/review',// seedance2资源提交审核
 	seedance2ResourcReviewByChannel:'config/item/reviewOne',// seedance2资源提交审核（按单个渠道）
 	seedance2ResourcReviewUpdate:'config/itemAsset/updateInfo',// 更新seedance2资源审核ID
+	userChatRecordMemoirs:'config/userChatRecordMemoirs',// 增加优化内容版本
+	chat:'config/modelApi/chat',// 聊天
+	startChat:'config/userChatRecordMemoirs/startChat',// 开始聊天
+	chatRecordList:'config/chatRecord/list',// 会话记录列表
+	chatRecord:'config/chatRecord',// 会话记录
+	userChatRecordMemoirsList:'config/userChatRecordMemoirs/list',// 会话记录列表
+	updateCameraChatSessionId:'config/userChatRecordMemoirs/replaceChat',// 更新会话ID
+
+	skillList:'config/skill/list',
+	skillInstall:'config/skill/install',
+	skillDetail:'config/skill',
+	assetExtractionSession:'config/assetExtraction/session',
+	assetExtractionScript:'config/assetExtraction/script',
+	assetExtractionDrafts:'config/assetExtraction/drafts',
+	assetExtractionChat:'config/assetExtraction/chat',
+	assetExtractionConfirm:'config/assetExtraction/confirm',
 }
 
 let serverUrl = "/server/"
@@ -345,5 +354,4 @@ export function decryptData(data) {
 		var result = decrypt.toString(CryptoJS.enc.Utf8);
 	} catch {}
 	return result
-
 }

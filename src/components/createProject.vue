@@ -178,7 +178,7 @@ function createProject() {
   }
 
   if(store.getters.roles.includes('demo_personal')){
-    projectConfig.videoConfig.defaultModel = '16';
+    projectConfig.videoConfig.defaultModel = store.getters.platformType===2?'50':'16';
     projectConfig.videoConfig.defaultResolution = '480P';
 
     projectConfig.pictureConfig.defaultResolution = "1K";

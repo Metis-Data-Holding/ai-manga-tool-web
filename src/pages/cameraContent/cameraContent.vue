@@ -15,26 +15,25 @@
 						</view>
 					 </view>
 				</view>
-				<view style="flex-direction: row;display: flex;align-items: center;border-radius: 16rpx;overflow: hidden;">
+				<view style="flex-direction: row;display: flex;align-items: center;border-radius: 8px;overflow: hidden;cursor: pointer;">
 					<block  v-for="(item,index) in state.titleList" :key="index">
-						<view :style="'background:'+(item.type==state.tabType?'#F8BA38;':'#E7E7E7;')+'color:'+(item.type==state.tabType?'#333333;':'#666666;')" @click="onClickTabItem(item.type)" class="sp-item">{{item.name}}</view>
+						<view :class="['sp-item',{'active':item.type==state.tabType}]" @click="onClickTabItem(item.type)">{{item.name}}</view>
 					</block>
 				</view>
 				<view style="flex-direction: row;display: flex;align-items: center;margin-right: 48rpx;">
 					<button class="mgrButton" @click="state.showComputingPower = true">算力详情</button>
 					<button class="mgrButton" style="margin-left: 16rpx;" @click="openSpManager">SP管理</button>
 					<button class="mgrButton" style="margin-left: 16rpx;" @click="openProjectSetting">项目设置</button>
-					<view style="border: 2rpx solid #E7E7E7;height: 64rpx;margin-left: 32rpx; display: flex;flex-direction: row;justify-content: flex-start;align-items: center;border-radius: 32rpx;">
-						<image style="width: 48rpx;height: 48rpx;margin-left: 16rpx;border-radius: 50%;" src="/static/user.png" mode="aspectFit"></image>
+					<view style="border: 2rpx solid #E7E7E7;height: 64rpx;margin-left: 32rpx; display: flex;flex-direction: row;justify-content: flex-start;align-items: center;border-radius: 32rpx;border: 1px solid #FFDC00;background: linear-gradient(0deg, #FFF8EC, #FFF8EC), linear-gradient(0deg, #FEFAF5, #FEFAF5), #E7E7E7;">
 						<image style="width: 40rpx;height: 40rpx;margin-left: 16rpx;" src="/static/tiliicon.png" mode="aspectFit"></image>
-						<text style="font-size: 28rpx;font-weight: 500;color: #666666;margin-right: 16rpx;">99999999</text>
+						<text style="font-size: 28rpx;font-weight: 500;color: #666666;margin-right: 16rpx;">{{ store.getters.remainingPoints || '-' }}</text>
 					</view>
 					<!-- <button style="height: 36px;line-height: 36px;font-size: 16px;margin-left: 16px;" @click="logout">退出登录</button> -->
 				</view>
 			</view>
 		</view>
 
-		<episodeScript ref="episodeScriptRef" v-if="state.tabType==2" :projectConfig="state.projectConfig" @updateProjectSetting="updateProjectSetting"></episodeScript>
+		<episodeScript ref="episodeScriptRef" v-if="state.tabType==2" :scrollTop="state.episodeScrollTop" :projectConfig="state.projectConfig" @updateProjectSetting="updateProjectSetting" @updateScrollTop="updateEpisodeScrollTop"></episodeScript>
 		<resourceCom ref="resourceRef" v-if="state.tabType==3" :projectConfig="state.projectConfig"></resourceCom>
 		<story v-if="state.tabType==4" ref="storyRef" :projectConfig="state.projectConfig" @cancelTaskQueueSucceed="CheckTask"></story>
 		<PopupComputingPower 
@@ -95,6 +94,8 @@
 		showComputingPower:false,
 		curFinishTask:0,
 		queueTask:0,
+
+		episodeScrollTop:0
 	})
 	let checkintervalID = null
 
@@ -282,6 +283,10 @@
 				}
 			}
 		})
+	}
+
+	function updateEpisodeScrollTop(scrollTop){
+		state.episodeScrollTop=scrollTop
 	}
 </script>
 

@@ -30,9 +30,9 @@
                         <text class="title">项目模式<text style="color: red;font-size: 12px;">* 不可修改</text></text>
                     </view>
                     <view style="display: flex;padding-top: 8px;">
-                        <view :class="'actionBtn flex ' + (props.data.type == 1 ? 'yellow' : 'white')">
+                        <view :class="'actionBtn flex ' + (props.data.type == 1 ? 'primary' : 'white')">
                             多参流程</view>
-                        <view :class="'actionBtn flex ' + (props.data.type == 2 ? 'yellow' : 'white')">
+                        <view :class="'actionBtn flex ' + (props.data.type == 2 ? 'primary' : 'white')">
                             图生流程</view>
                     </view>
                 </view>
@@ -184,7 +184,7 @@
                                     </view>
                                 </view>
                             </view>
-                            <textarea :value.trim="editable?state.form.projectConfig.txtConfig.storyboard.sp:'该智能体提示词仅调用，不可编辑'" :maxlength="-1"
+                            <textarea :value.trim="editable?state.form.projectConfig.txtConfig.storyboard.sp:'*该智能体提示词仅调用且不可编辑'" :maxlength="-1"
                                 :disabled="!editable"
                                 @blur="(e)=>{state.form.projectConfig.txtConfig.storyboard.sp = e.detail.value}"
                                 placeholder-style="color: #999;" placeholder="请选择故事板SP"
@@ -270,7 +270,7 @@
                                     </view>
                                 </view>
                             </view>
-                            <textarea :value.trim="editable?state.form.projectConfig.pictureConfig.promptSp:'该智能体提示词仅调用，不可编辑'" :maxlength="-1"
+                            <textarea :value.trim="editable?state.form.projectConfig.pictureConfig.promptSp:'*该智能体提示词仅调用且不可编辑'" :maxlength="-1"
                                 :disabled="!editable"
                                 @blur="(e)=>{state.form.projectConfig.pictureConfig.promptSp = e.detail.value}"
                                 placeholder-style="color: #999;" placeholder="请选择生图风格SP"
@@ -304,7 +304,7 @@
                                     style="display: flex;flex-wrap: wrap; align-items: center;gap: 10rpx;margin-top: 12rpx;">
                                     <block v-for="(resuitem, countindex) in state.resolutionList" :key="countindex">
                                         <view @click="changeResolutionImage(resuitem)"
-                                            :style="'border-radius: 6rpx;border: 4rpx solid #DCDCDC;margin: 0; margin-right: 8rpx; width: 140rpx;height: 64rpx;display:flex;justify-content: center;align-items: center;font-size: 28rpx;background:' + (resuitem == state.form.projectConfig.pictureConfig.defaultResolution ? '#F8BA38' : '#F3F3F3') + ';color:' + (resuitem == state.form.projectConfig.pictureConfig.defaultResolution ? '#000000' : '#000000') + ';'">
+                                            :style="'border-radius: 6rpx;border: 4rpx solid #DCDCDC;margin: 0; margin-right: 8rpx; width: 140rpx;height: 64rpx;display:flex;justify-content: center;align-items: center;font-size: 28rpx;background:' + (resuitem == state.form.projectConfig.pictureConfig.defaultResolution ? '#2A2A2A' : '#F3F3F3') + ';color:' + (resuitem == state.form.projectConfig.pictureConfig.defaultResolution ? '#fff' : '#000000') + ';'">
                                             {{ resuitem }}</view>
                                     </block>
                                 </view>
@@ -316,7 +316,7 @@
                                     style="display: flex;flex-wrap: wrap; align-items: center;gap: 10rpx;margin-top: 12rpx;">
                                     <block v-for="(countitem, countindex) in [1, 2, 3, 4]" :key="countindex">
                                         <view @click="changeCountImage(countitem)"
-                                            :style="'border-radius: 6rpx;border: 4rpx solid #DCDCDC;margin: 0; margin-right: 8rpx; width: 140rpx;height: 64rpx;display:flex;justify-content: center;align-items: center;font-size: 28rpx;background:' + (countitem == state.form.projectConfig.pictureConfig.defaultNum ? '#F8BA38' : '#F3F3F3') + ';color:' + (countitem == state.form.projectConfig.pictureConfig.defaultNum ? '#000000' : '#000000') + ';'">
+                                            :style="'border-radius: 6rpx;border: 4rpx solid #DCDCDC;margin: 0; margin-right: 8rpx; width: 140rpx;height: 64rpx;display:flex;justify-content: center;align-items: center;font-size: 28rpx;background:' + (countitem == state.form.projectConfig.pictureConfig.defaultNum ? '#2A2A2A' : '#F3F3F3') + ';color:' + (countitem == state.form.projectConfig.pictureConfig.defaultNum ? '#fff' : '#000000') + ';'">
                                             {{ countitem }}</view>
                                     </block>
                                 </view>
@@ -328,7 +328,7 @@
                                     style="display: flex;flex-wrap: wrap; align-items: center;gap: 10rpx;margin-top: 12rpx;">
                                     <block v-for="(ratiotitem, countindex) in state.ratioList" :key="countindex">
                                         <view @click="changeRatioImage(ratiotitem)"
-                                            :style="'border-radius: 6rpx;border: 4rpx solid #DCDCDC;margin: 0; margin-right: 8rpx; width: 140rpx;height: 64rpx;display:flex;justify-content: center;align-items: center;font-size: 28rpx;background:' + (ratiotitem == state.form.projectConfig.pictureConfig.defaultFrame ? '#F8BA38' : '#F3F3F3') + ';color:' + (ratiotitem == state.form.projectConfig.pictureConfig.defaultFrame ? '#000000' : '#000000') + ';'">
+                                            :style="'border-radius: 6rpx;border: 4rpx solid #DCDCDC;margin: 0; margin-right: 8rpx; width: 140rpx;height: 64rpx;display:flex;justify-content: center;align-items: center;font-size: 28rpx;background:' + (ratiotitem == state.form.projectConfig.pictureConfig.defaultFrame ? '#2A2A2A' : '#F3F3F3') + ';color:' + (ratiotitem == state.form.projectConfig.pictureConfig.defaultFrame ? '#fff' : '#000000') + ';'">
                                             {{ ratiotitem }}</view>
                                     </block>
                                 </view>
@@ -380,7 +380,7 @@
                                         </view>
                                     </view>
                                 </view>
-                                <textarea :value.trim="editable?state.form.projectConfig.rtConfig.sp:'该智能体提示词仅调用，不可编辑'" :maxlength="-1"
+                                <textarea :value.trim="editable?state.form.projectConfig.rtConfig.sp:'*该智能体提示词仅调用且不可编辑'" :maxlength="-1"
                                     @blur="(e)=>{state.form.projectConfig.videoConfig.rtSp = e.detail.value}"    
                                     :disabled="!editable"
                                     placeholder-style="color: #999;" placeholder="请选择默认融图风格SP"
@@ -410,7 +410,7 @@
                                             <block v-for="(resuitem, countindex) in state.resolutionList_rongtu"
                                                 :key="countindex">
                                                 <view @click="handleChangePropValue('rtConfig.resolution', resuitem)"
-                                                    :style="'border-radius: 6rpx;border: 4rpx solid #DCDCDC;margin: 0; margin-right: 8rpx; width: 140rpx;height: 64rpx;display:flex;justify-content: center;align-items: center;font-size: 28rpx;background:' + (resuitem == state.form.projectConfig.rtConfig.resolution ? '#F8BA38' : '#F3F3F3') + ';color:' + (resuitem == state.form.projectConfig.rtConfig.resolution ? '#000000' : '#000000') + ';'">
+                                                    :style="'border-radius: 6rpx;border: 4rpx solid #DCDCDC;margin: 0; margin-right: 8rpx; width: 140rpx;height: 64rpx;display:flex;justify-content: center;align-items: center;font-size: 28rpx;background:' + (resuitem == state.form.projectConfig.rtConfig.resolution ? '#2A2A2A' : '#F3F3F3') + ';color:' + (resuitem == state.form.projectConfig.rtConfig.resolution ? '#fff' : '#000000') + ';'">
                                                     {{ resuitem }}</view>
                                             </block>
                                         </view>
@@ -423,7 +423,7 @@
                                             <block v-for="(ratiotitem, countindex) in state.ratioList_rongtu"
                                                 :key="countindex">
                                                 <view @click="handleChangePropValue('rtConfig.frame', ratiotitem)"
-                                                    :style="'border-radius: 6rpx;border: 4rpx solid #DCDCDC;margin: 0; margin-right: 8rpx; width: 140rpx;height: 64rpx;display:flex;justify-content: center;align-items: center;font-size: 28rpx;background:' + (ratiotitem == state.form.projectConfig.rtConfig.frame ? '#F8BA38' : '#F3F3F3') + ';color:' + (ratiotitem == state.form.projectConfig.rtConfig.frame ? '#000000' : '#000000') + ';'">
+                                                    :style="'border-radius: 6rpx;border: 4rpx solid #DCDCDC;margin: 0; margin-right: 8rpx; width: 140rpx;height: 64rpx;display:flex;justify-content: center;align-items: center;font-size: 28rpx;background:' + (ratiotitem == state.form.projectConfig.rtConfig.frame ? '#2A2A2A' : '#F3F3F3') + ';color:' + (ratiotitem == state.form.projectConfig.rtConfig.frame ? '#fff' : '#000000') + ';'">
                                                     {{ ratiotitem }}</view>
                                             </block>
                                         </view>
@@ -435,7 +435,7 @@
                                             style="display: flex;flex-wrap: wrap; align-items: center;gap: 10rpx;margin-top: 12rpx;">
                                             <block v-for="(countitem, countindex) in [1, 2, 3, 4]" :key="countindex">
                                                 <view @click="handleChangePropValue('rtConfig.num', countitem)"
-                                                    :style="'border-radius: 6rpx;border: 4rpx solid #DCDCDC;margin: 0; margin-right: 8rpx; width: 140rpx;height: 64rpx;display:flex;justify-content: center;align-items: center;font-size: 28rpx;background:' + (countitem == state.form.projectConfig.rtConfig.num ? '#F8BA38' : '#F3F3F3') + ';color:' + (countitem == state.form.projectConfig.rtConfig.num ? '#000000' : '#000000') + ';'">
+                                                    :style="'border-radius: 6rpx;border: 4rpx solid #DCDCDC;margin: 0; margin-right: 8rpx; width: 140rpx;height: 64rpx;display:flex;justify-content: center;align-items: center;font-size: 28rpx;background:' + (countitem == state.form.projectConfig.rtConfig.num ? '#2A2A2A' : '#F3F3F3') + ';color:' + (countitem == state.form.projectConfig.rtConfig.num ? '#fff' : '#000000') + ';'">
                                                     {{ countitem }}</view>
                                             </block>
                                         </view>
@@ -457,13 +457,13 @@
                                     </view>
                                     <view style="width: 400rpx;padding-left: 24rpx;">
                                         <uni-data-select v-model="state.form.projectConfig.videoConfig.rtSpId"
-                                            :localdata="spConfig.huafeng"
-                                            @change="(value) => handleSpChange(value, 'videoConfig', 'rtSp', spConfig.huafeng)"
+                                            :localdata="spConfig.videoHuafeng"
+                                            @change="(value) => handleSpChange(value, 'videoConfig', 'rtSp', spConfig.videoHuafeng)"
                                             @clear="()=>{state.form.projectConfig.videoConfig.rtSp = ''}"></uni-data-select>
                                     </view>
                                 </view>
                             </view>
-                            <textarea :value.trim="editable?state.form.projectConfig.videoConfig.rtSp:'该智能体提示词仅调用，不可编辑'" :maxlength="-1"
+                            <textarea :value.trim="editable?state.form.projectConfig.videoConfig.rtSp:'*该智能体提示词仅调用且不可编辑'" :maxlength="-1"
                                 @blur="(e)=>{state.form.projectConfig.videoConfig.rtSp = e.detail.value}"
                                 placeholder-style="color: #999;" placeholder="请选择默认生视频风格SP" :disabled="!editable"
                                 style="height: 240rpx; width: 95%; background: #F7F7F7;margin-left: 40rpx;border-radius: 16rpx;padding: 16rpx;margin-top: 16rpx;"></textarea>
@@ -501,7 +501,7 @@
                                         <block v-for="(ratiotitem, countindex) in state.ratioList_video"
                                             :key="countindex">
                                             <view @click="changeRatio(ratiotitem)"
-                                                :style="'border-radius: 6rpx;border: 4rpx solid #DCDCDC;margin: 0; margin-right: 8rpx; width: 140rpx;height: 64rpx;display:flex;justify-content: center;align-items: center;font-size: 28rpx;background:' + (ratiotitem == state.form.projectConfig.videoConfig.defaultFrame ? '#F8BA38' : '#F3F3F3') + ';color:' + (ratiotitem == state.form.projectConfig.videoConfig.defaultFrame ? '#000000' : '#000000') + ';'">
+                                                :style="'border-radius: 6rpx;border: 4rpx solid #DCDCDC;margin: 0; margin-right: 8rpx; width: 140rpx;height: 64rpx;display:flex;justify-content: center;align-items: center;font-size: 28rpx;background:' + (ratiotitem == state.form.projectConfig.videoConfig.defaultFrame ? '#2A2A2A' : '#F3F3F3') + ';color:' + (ratiotitem == state.form.projectConfig.videoConfig.defaultFrame ? '#fff' : '#000000') + ';'">
                                                 {{ ratiotitem }}</view>
                                         </block>
                                     </view>
@@ -514,7 +514,7 @@
                                         <block v-for="(resuitem, countindex) in state.resolutionList_video"
                                             :key="countindex">
                                             <view @click="changeResolution(resuitem)"
-                                                :style="'border-radius: 6rpx;border: 4rpx solid #DCDCDC;margin: 0; margin-right: 8rpx; width: 140rpx;height: 64rpx;display:flex;justify-content: center;align-items: center;font-size: 28rpx;background:' + (resuitem == state.form.projectConfig.videoConfig.defaultResolution ? '#F8BA38' : '#F3F3F3') + ';color:' + (resuitem == state.form.projectConfig.videoConfig.defaultResolution ? '#000000' : '#000000') + ';'">
+                                                :style="'border-radius: 6rpx;border: 4rpx solid #DCDCDC;margin: 0; margin-right: 8rpx; width: 140rpx;height: 64rpx;display:flex;justify-content: center;align-items: center;font-size: 28rpx;background:' + (resuitem == state.form.projectConfig.videoConfig.defaultResolution ? '#2A2A2A' : '#F3F3F3') + ';color:' + (resuitem == state.form.projectConfig.videoConfig.defaultResolution ? '#fff' : '#000000') + ';'">
                                                 {{ resuitem }}</view>
                                         </block>
                                     </view>
@@ -630,11 +630,12 @@ const spIdList = {
     7: 'rongtu',// 融图
     // 19: 'fuxiang',// 负向
     14: 'shengshipin',//生视频
-    21: 'asseOptimization',//资产提炼
+    // 21: 'asseOptimization',//资产提炼
     // 22: 'analysis',//分析评估 
     // 23: 'episode',//分集剧本
     24: 'storyboard',// 生分镜
-    18: 'assetIdentification',//资产识别
+    // 18: 'assetIdentification',//资产识别
+    31: 'videoHuafeng',//视频画风
 }
 const spConfig = reactive({
     // 画风
@@ -657,7 +658,8 @@ const spConfig = reactive({
     storyboard: [],
     // 资产识别
     assetIdentification: [],
-
+    // 视频画风
+    videoHuafeng: [],
 })
 
 // 模型
@@ -818,7 +820,6 @@ function ensureAssetExtractionDefaultModel() {
     }
 }
 
-
 const resetForm = () => {
     state.form = {
         id: '',// 项目id
@@ -922,10 +923,11 @@ const getAIModel = () => {
         const videoTypeList = aiModelConfig.video = data.filter(i => i.modelType == '1')
 
         // 项目类型过筛
-        if (props.data.type == 1) {
+        if (props.data.type == 1) { // 多参流程
             aiModelConfig.video = videoTypeList.filter(i => !['4','23','52'].includes(i.value))
-        } else if (props.data.type == 2) {
-            aiModelConfig.video = editable.value?videoTypeList.filter(i => ['4','10','23','50','51','52',].includes(i.value)):videoTypeList.filter(i => i.value=='16')
+        } else if (props.data.type == 2) { // 图生流程
+            const filterId = store.getters.platformType===2?['50','51',50,51]:['16',16];
+            aiModelConfig.video = editable.value?videoTypeList.filter(i => ['4','10','23','50','51','52',].includes(i.value)):videoTypeList.filter(i => filterId.includes(i.value))
         }
     })
 }
@@ -1249,7 +1251,7 @@ onMounted(() => {
 
     .headerTitle {
         font-size: 30px;
-        color: #F8BA38;
+        color: #2A2A2A;
         font-weight: bold;
         margin-bottom: 16px;
     }
@@ -1349,7 +1351,8 @@ onMounted(() => {
             }
 
             &.active {
-                background-color: #F8BA38;
+                background-color: #2A2A2A;
+                color: #fff;
             }
         }
     }
@@ -1371,16 +1374,12 @@ onMounted(() => {
         }
 
         &.primary {
-            background-color: #F8BA38;
+            background-color: #2A2A2A;
             color: #fff;
         }
 
         &.white {
             background-color: #fff;
-        }
-
-        &.yellow {
-            background: linear-gradient(90deg, #F8BA38 0%, #FFCA5A 100%), #0052D9;
         }
 
         &.danger {

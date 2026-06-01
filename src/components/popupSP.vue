@@ -13,9 +13,9 @@
 
                 <view class="resourceList">
                     <view class="item" v-for="(item, index) in filteredListData" :key="item.id"
-                        @click="state.selectedIndex = index">
+                        @click="handleSelect(item)">
                         <image v-if="item.url" :src="item.url" mode="aspectFill" class="img"></image>
-                        <view :class="['checkbox', { 'checked': index === state.selectedIndex }]"></view>
+                        <view :class="['checkbox', { 'checked': state.selectedIds.includes(item.id) }]"></view>
                         <!-- <view class="preview" style="top: 8px;" @click.stop="() => { }"></view> -->
                         <view class="bottom">
                             <view class="title">{{ item.name }}</view>
@@ -34,7 +34,7 @@
 </template>
 
 <script setup name="PopupSP">
-import { reactive, ref, computed, onMounted } from "vue";
+import { reactive, ref, computed, onMounted, watch } from "vue";
 import { GetResourceList } from '@/common/ResourceMgr'
 import { debounce } from "lodash";
 
@@ -45,33 +45,75 @@ const props = defineProps({
         required: true,
         default: false,
     },
-    typeId:{
+    typeId: {
         type: [Number, String],
         required: true,
     },
-    title:{
+    title: {
         type: String,
         required: true,
         default: '标题',
+    },
+    value: {
+        type: [Number, String, Array],
+        default: () => [],
+    },
+    multiple: {
+        type: Boolean,
+        default: false,
     }
 });
 
 const state = reactive({
-    selectedIndex: 0,
-    listData:[],
-    searchKeyWord:''
+    selectedIds: [],
+    listData: [],
+    searchKeyWord: ''
 });
 
 const filteredListData = computed(() => {
     return state.listData.filter(item => item.name.includes(state.searchKeyWord))
 })
 
+watch(() => props.value, (newVal) => {
+    if(Array.isArray(newVal)){
+        state.selectedIds = newVal
+    }else{
+        state.selectedIds = [newVal]
+    }
+},{
+    immediate: true,
+})
+
+const handleSelect = (item) => {
+    if(state.selectedIds.includes(item.id)){
+        state.selectedIds = state.selectedIds.filter(i => i !== item.id)
+    }else{
+        if(props.multiple){
+            state.selectedIds.push(item.id)
+        }else{
+            state.selectedIds = [item.id]
+        }
+    }
+}
+
 const handleSearch = debounce((value) => {
     state.searchKeyWord = value
 }, 500)
 
 const handleConfirm = () => {
-    emit("confirm",filteredListData.value[state.selectedIndex])
+    let target = filteredListData.value.filter(item => state.selectedIds.includes(item.id))
+    if(target.length === 0){
+        uni.showToast({
+            title: '请选择内容',
+            icon: 'none'
+        })
+        return
+    }
+    if(props.multiple){
+        emit("confirm", target)
+    }else{
+        emit("confirm", target[0])
+    }
     handleClose()
 }
 
@@ -81,11 +123,11 @@ const handleClose = () => {
 
 onMounted(() => {
     GetResourceList(1, 1000, props.typeId, (resList) => {
-        state.listData = resList.map(i=>{
+        state.listData = resList.map(i => {
             return {
-                name:i.name,
-                content:i.content,
-                id:i.id,
+                name: i.name,
+                content: i.content,
+                id: i.id,
             }
         })
     })
@@ -191,7 +233,7 @@ onMounted(() => {
             }
         }
 
-         .preview {
+        .preview {
             cursor: pointer;
             width: 20px;
             height: 20px;

@@ -20,24 +20,25 @@
 				<view class="content">
 					<view class="head">
 						<view class="title">项目库</view>
-						<view style="display: flex;">
-							<view @click="openAssetExtraction" class="btn"
-								style="margin-right: 20px;background-color: #F8BA38;color: #333;">
-								<text class="text">资产提炼</text>
-							</view>
+						<view style="display: flex;">						
 							<!-- <view @click="enableDraggable" class="btn"
-								style="margin-right: 20px;background-color: #409EFF;color: #fff;width: 100px;">
+								style="margin-right: 20px;background-color: #2A2A2A;color: #fff;width: 100px;">
 								<text style="padding-left: 4px;">{{state.enableDraggable ? '保存排序' : '开启排序'}}</text>
 							</view> -->
 							<view @click="OpenBatchCreateRes" class="btn"
-								style="margin-right: 20px;background-color: #409EFF;color: #fff;">
-								<image class="icon" src="/static/publicIcon_white.png" mode="widthFix"></image>
+								style="margin-right: 20px;">
+								<image class="icon" src="/static/publicIcon.png" mode="widthFix"></image>
 								<text style="padding-left: 4px;">导入资产清单</text>
 							</view>
 							<view class="btn" style="margin-right: 20px;" v-debounce.click="{handler:createImageMultiple,immediate:true,delay:500}">
 								<text class="text">一键生成全部资产</text>
 							</view>
-							<view class="btn" @click="addResItem">
+							<view @click="openAssetExtraction" class="btn"
+								style="margin-right: 20px;background-color: #FFDC00;border: none;">
+								<image class="icon" src="/static/tilian_icon@.png" mode="widthFix"></image>
+								<text class="text">资产提炼</text>
+							</view>
+							<view class="btn" @click="addResItem" style="background-color: #FFDC00;border: none;">
 								<image class="icon" src="/static/publicIcon.png" mode="widthFix"></image>
 								<text class="text">新建资产</text>
 							</view>
@@ -48,8 +49,8 @@
 							item.id == state.curResType)?.treeName + '资产'}}</text>
 						<text style="font-size: 16px;color: #666666;" v-show="state.curResList?.length > 0">*{{
 							state.curResList?.length }}</text>
-						<view v-if="state.curResType == 2" style="width: 140px;height: 40px;margin-left: 12px;cursor: pointer;display: flex;align-items: center;color: #fff;background-color: #409EFF;border-radius: 8px; justify-content: center;margin-right: 8px;" @click="handleDownloadRoles">
-                            <image src="/static/tag_download.png" style="width: 20px;" mode="widthFix"></image>
+						<view v-if="state.curResType == 2" style="width: 140px;height: 40px;margin-left: 12px;cursor: pointer;display: flex;align-items: center;color: #fff;background-color: #2A2A2A;border-radius: 8px; justify-content: center;margin-right: 8px;" @click="handleDownloadRoles">
+                            <image src="/static/download_icon_white.png" style="width: 20px;" mode="widthFix"></image>
                             <text>一键下载角色</text>
                         </view>
 					</view>
@@ -90,6 +91,7 @@
 		<resourceDetail ref="resourceDetailRef" v-if="state.curResourceInfo.id"  :data="state.curResourceInfo"
 			:typeMap="state.resTypeList" :createImageConfig="props.projectConfig.projectConfig.pictureConfig"
 			:huafengSp="state.huafengSp"
+			:huafengSPList="state.huafengSPList"
 			@updated="handleResourceItemUpdate"
 			@deleted="() => { updateResourceList(state.curResType); state.curResourceInfo = {}; }" />
 	</view>
@@ -160,7 +162,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, reactive, onMounted, ref,onBeforeUnmount, onUnmounted ,nextTick, onActivated, onDeactivated, computed } from "vue";
+import { defineProps, defineEmits, reactive, onMounted, ref,onBeforeUnmount, onUnmounted ,nextTick, onActivated, onDeactivated, computed, watch } from "vue";
 
 const scrollTop = ref(0);
 import { APIPath, deleteRequest, getRequest, postRequest, putRequest } from "@/common/APIRequest"
@@ -236,7 +238,15 @@ const state = reactive({
 	originResListSort: [],
 
 	agentList:[],
+
+	huafengSPList:[], //画风SP列表
 });
+
+watch(() => props.projectConfig.projectConfig.pictureConfig, (newVal, oldVal) => {
+    if(newVal && newVal.promptSpId==''){
+        state.huafengSp = ''
+    }
+})
 
 const listData = computed({
 	get(){
@@ -520,6 +530,7 @@ onMounted(() => {
 	GetResourceList(1, 1000, 9, (resList) => {
 		const huafengSpid = props.projectConfig.projectConfig.pictureConfig.promptSpId;
 		state.huafengSp = resList.find(item => item.id == huafengSpid)?.content;
+		state.huafengSPList = resList
 	})
 
 	// state.curResType = state.resTypeList[0].id;
@@ -707,10 +718,24 @@ function createImageMultiple() {
 			return
 		}
 		var styleSP= state.huafengS || props.projectConfig.projectConfig.pictureConfig.promptSp;
+		let huafeng = {};
+
 		if(!isNull(styleSP)){
-			styleSP="\n风格："+styleSP
+			huafeng = {
+				content:styleSP,
+				id:props.projectConfig.projectConfig.pictureConfig.promptSpId,
+				name:state.huafengSPList.find(item => item.id == props.projectConfig.projectConfig.pictureConfig.promptSpId)?.name || '',
+			}
+
+			styleSP="\n风格："+styleSP			
 		}
 		for (const resItem of resList) {
+			let frontExpand = {
+				prompt:resItem.content,
+				ratio: rawRatio,
+				resolution: rawResolution,
+				huafeng
+			}
 			const _isEmpty = isNull(resItem.content?.trim());
 			const _isHistoryImgExist = resItem.historyUrl.filter(i=>i.status==5).length>=1;
 			_isEmpty && (emptyContentExist = true);
@@ -721,6 +746,7 @@ function createImageMultiple() {
 			}
 
 			configs.push({
+				frontExpand:JSON.stringify(frontExpand),
 				modelId: curModelId,
 				prompt: resItem.content + styleSP,
 				ratio: rawRatio,
@@ -1146,7 +1172,7 @@ function enableDraggable(){
 
 			&.active,
 			&:hover {
-				background-color: #409eff;
+				background-color: #2A2A2A;
 				color: #fff;
 			}
 		}
@@ -1178,7 +1204,7 @@ function enableDraggable(){
 
 			&.active,
 			&:hover {
-				background-color: #409eff;
+				background-color: #2A2A2A;
 				color: #fff;
 			}
 		}
@@ -1209,12 +1235,14 @@ function enableDraggable(){
 				width: 140px;
 				height: 36px;
 				line-height: 36px;
-				background: #f8ba38;
+				background: #E7E7E7;
 				color: #333;
 				font-size: 14px;
 				border-radius: 8px;
 				font-weight: bold;
 				text-align: center;
+				border: 1px solid #d1d1d1;
+				box-sizing: border-box;
 				cursor: pointer;
 
 				.icon {

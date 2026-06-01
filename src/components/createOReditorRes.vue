@@ -278,6 +278,5 @@
 		height: 72rpx;
 		justify-content: center;
 		align-items: center;
-		margin-right: 4rpx;
 	}
 </style>

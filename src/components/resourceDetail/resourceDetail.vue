@@ -7,7 +7,7 @@
                 <view class="btn" style="margin-right: 8px" @click="getDetail(true)">刷新</view>
                 <template v-if="props.editable">
                     <view class="btn danger" @click="handleDeleteResource">删除</view>
-                    <view class="btn light" style="margin-left: 8px" @click="handleUpdateResource()">保存</view>
+                    <view class="btn primary" style="margin-left: 8px" @click="handleUpdateResource()">保存</view>
                 </template>
             </view>
         </view>
@@ -123,13 +123,15 @@
                     </image>
                     <text class="text" :style="{ color: seedance2ReviewStatusMap[reviewItem.status].color }">{{
                         reviewItem.platformName }}</text>
-                    <view class="tooltip" style="display: flex;align-items: center;"
+                    <!-- style="display: flex;align-items: center;" -->
+                    <view class="tooltip"
                         @click.stop="() => copyText(reviewItem.content)">
                         <text style="white-space: nowrap;">合规ID: {{
                             reviewItem.content ? reviewItem.content : seedance2ReviewStatusMap[reviewItem.status].text
                         }}</text>
+                        <text v-if="reviewItem.mark" style="padding-left: 8px;">{{ reviewItem.mark }}</text>
                         <image src="/static/copy_icon.png" v-if="reviewItem.content"
-                            style="width: 20px; height: 20px;padding-left: 8px;cursor: pointer;" mode="heightFix">
+                            style="width: 20px; height: 20px;vertical-align: middle;padding-left: 8px;cursor: pointer;" mode="heightFix">
                         </image>
                     </view>
                 </view>
@@ -495,6 +497,10 @@ const props = defineProps({
         type: String,
         default: '',
     },
+    huafengSPList:{
+        type: Array,
+        default: () => [],
+    },
     // 是否可编辑
     editable: {
         type: Boolean,
@@ -615,6 +621,10 @@ const seedance2ChannelList = computed(() => {
     }) || []
 })
 
+const platformType = computed(() => {
+    return store.getters.platformType
+})
+
 watch(() => props.data, (newVal, oldVal) => {
     const isEuqalProps = deepEqualFast(newVal, form.value)
     if (newVal?.id == oldVal?.id && isEuqalProps) {
@@ -686,12 +696,29 @@ function startRawImage() {
         return
     }
     var styleSP = props.huafengSp || props.createImageConfig.promptSp;
+    let styleSPId= props.createImageConfig.promptSpId;
+    
+    let frontExpand = {
+        prompt:form.value.content,
+        ratio: state.rawRatio,
+        resolution: state.rawResolution,
+        num: state.rawCount,
+        urls: form.value.expand?.imgUrls?.map(i => i.url) || [],
+    };
+
     if (!isNull(styleSP) && !form.value.content.match('/风格及光线[:：]{1}/')) {
-        styleSP = "\n风格：" + styleSP
+        frontExpand.huafeng = {
+            content:styleSP,
+            id:styleSPId,
+            name:props.huafengSPList.find(item => item.id == styleSPId)?.name || '',
+        }
+
+        styleSP = "\n风格：" + styleSP     
     }
 
     const modelInterface = state.ailist.find(i => i.value == state.curModelId)?.modelInterface
     const params = [{
+        frontExpand:JSON.stringify(frontExpand),
         projectId: props.data.projectId,
         modelId: state.curModelId,
         prompt: form.value.content + styleSP,
@@ -702,7 +729,7 @@ function startRawImage() {
         typeId: props.data.typeId,
         num: state.rawCount,
         itemId: form.value.id,
-        imageUrls: form.value.expand?.imgUrls?.map(i => i.url) || []
+        imageUrls: form.value.expand?.imgUrls?.map(i => i.url) || [],
     }]
 
     switch (modelInterface) {
@@ -1122,10 +1149,11 @@ const handleDeleteResource = () => {
 
 function changeResolution() {
     const target = modelParamsConfig.find(item => item.id == state.curModelId)
-
-    state.resolutionList = target.resolution
-    state.ratioList = target.ratio
-
+    if(target){
+        state.resolutionList = target.resolution
+        state.ratioList = target.ratio
+    }
+    
     if (!state.resolutionList.includes(state.curresolution)) {
         state.rawResolution = state.curresolution = state.resolutionList[0]
 
@@ -1203,7 +1231,7 @@ function showSeedance2AuditPopup() {
     if (firstChannel) {
         state.seedance2AuditPopup.id = firstChannel.id
         state.seedance2AuditPopup.inputValue = firstChannel.content
-        state.seedance2AuditPopup.platform = firstChannel.value
+        state.seedance2AuditPopup.platform = firstChannel.platform
     }
 
     state.seedance2AuditPopup.visible = true
@@ -1213,6 +1241,7 @@ function seedance2AuditPopupSelectorChange(value) {
     const channel = seedance2ChannelList.value.find(i => i.value == value)
     if (channel) {
         state.seedance2AuditPopup.inputValue = channel.content
+        state.seedance2AuditPopup.id = channel.id
     }
 }
 
@@ -1501,7 +1530,7 @@ defineExpose({
     padding-right: 40rpx;
     box-sizing: border-box;
     overflow-y: scroll;
-
+    background: linear-gradient(0deg, #FFF8EC, #FFF8EC), linear-gradient(0deg, #FDF4E4, #FDF4E4), #FFFFFF;
     .head {
         display: flex;
         justify-content: space-between;
@@ -1529,8 +1558,9 @@ defineExpose({
                 color: #ff5757;
             }
 
-            &.light {
-                background: linear-gradient(90deg, #FFA600 0%, #FFDA3C 100%), linear-gradient(90deg, #F8BA38 0%, #FFCA5A 100%);
+            &.primary {
+                background: #2A2A2A;
+                color: #fff;
             }
         }
     }
@@ -1587,7 +1617,7 @@ defineExpose({
         align-items: center;
         padding: 8px;
         margin-top: 8px;
-        background: linear-gradient(0deg, #FCC34A, #FCC34A), linear-gradient(0deg, #FFA701, #FFA701), linear-gradient(0deg, #E7E7E7, #E7E7E7), rgba(0, 0, 0, 0.2);
+        background: linear-gradient(0deg, #FFE3B3, #FFE3B3), linear-gradient(0deg, #FFDC00, #FFDC00), linear-gradient(0deg, #FCC34A, #FCC34A), linear-gradient(0deg, #FFA701, #FFA701), linear-gradient(0deg, #E7E7E7, #E7E7E7), rgba(0, 0, 0, 0.2);
         border-radius: 8px 8px 0 0;
         overflow: hidden;
 
@@ -1647,8 +1677,8 @@ defineExpose({
             }
 
             &.active {
-                background-color: #f8ba38;
-                color: #333333;
+                background-color: #2A2A2A;
+                color: #FFF;
             }
         }
     }
@@ -1872,7 +1902,9 @@ defineExpose({
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 60px;
+    min-width: 60px;
+    box-sizing: border-box;
+    padding: 0 6px;
     height: 24px;
     border-radius: 4px;
     background-color: #FFFFFF;
@@ -1885,6 +1917,7 @@ defineExpose({
     .img {
         width: 14px;
         height: 14px;
+        flex-shrink: 0;
     }
 
     .text {
@@ -1900,9 +1933,9 @@ defineExpose({
     .tooltip {
         position: fixed;
         z-index: 999;
-        transform: translate(-100px, -34px);
-        height: 36px;
-        line-height: 36px;
+        transform: translate(-100px, -32px);
+        // height: 36px;
+        line-height: 30px;
         min-width: 200px;
         background-color: #FFE3AF;
         border-radius: 8px;

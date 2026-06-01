@@ -49,6 +49,14 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		background-color:#E7E7E7;
+		color: #666666;
+	}
+	.sp-item.active{
+		background-color: #2A2A2A;
+		color: #fff;
+		font-weight: bold;
+		border-radius: 8px;
 	}
 	.sp-input{
 		overflow: hidden;

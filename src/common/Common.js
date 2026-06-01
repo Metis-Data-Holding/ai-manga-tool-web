@@ -26,10 +26,15 @@ export function GetAIModelList() {
       (data) => {
         if (data.code == 200) {
           const roles = store.getters.roles;
+          const platformType = store.getters.platformType;
           if (roles.includes("demo_personal")) {
+            let ids = ['16',16]
+            if(platformType===2){
+              ids = ['50','51',50,51];
+            }
             resolve(
               data.rows.filter((i) => {
-                if (i.modelType == "1" && i.id != 16) {
+                if (i.modelType == "1" && !ids.includes(i.id)) {
                   return false;
                 }
                 return true;

@@ -19,11 +19,11 @@
 				</view>
 			</view>
 			<view class="content">
-				<view class="aside">
+				<scroll-view class="aside" scroll-y>
 					<view :class="['item', { 'active': index == state.curEditorIndex }]"
 						v-for="(item, index) in state.curSPContents" :key="index" @click="onClickEditorSPItem(index)">{{
 							item.title }}</view>
-				</view>
+				</scroll-view>
 				<view class="rightContent">
 					<view class="head">
 						<input class="uni-input inputWrapper" style="width: 480px;color: #333333;" @input="spTitleInput"
@@ -32,11 +32,11 @@
 						<view style="display: flex;" v-if="editable">
 							<view class="actionBtn danger" @click="deleteSPItem">删除</view>
 							<view class="actionBtn primary" @click="saveSPConfig">保存</view>
-							<view class="actionBtn primary" @click="addSPItem">新增</view>
+							<view class="actionBtn light" @click="addSPItem">新增</view>
 						</view>
 					</view>
 					<view class="inputWrapper uni-input" style="margin-top: 12px;flex: 1;padding: 16px;">
-						<textarea class="uni-input" style="width: 100%;height: 100%;color: #333333;" :value="!editable&&state.curSPType!=27 ?'该智能体提示词仅调用，不可编辑': state.curSpContent "
+						<textarea class="uni-input" style="width: 100%;height: 100%;" :style="{color:!editable&&state.curSPType!=27 ? '#FF5757' : '#333333'}" :value="!editable&&state.curSPType!=27 ?'*该智能体提示词仅调用且不可编辑': state.curSpContent "
 							:maxlength="-1" @input="spContentInput" placeholder-style="color: #999;"
 							placeholder="请输入内容" :disabled="!editable"></textarea>
 					</view>
@@ -69,7 +69,7 @@ const state = reactive({
 	curEditorIndex: 0,
 	curSpTitle: '',
 	curSpContent: '',
-    sptabList: [{ name: '故事板', type: 24 },{name: '画面风格', type: 9 },{name: '生图预设', type: 27 },{name: '分镜Agent', type: 29 },{name: '分镜深化风格', type: 30 }],
+    sptabList: [{ name: '故事板', type: 24 },{name: '生图画风', type: 9 },{name: '生视频画风', type: 31 },{name: '生图预设', type: 27 },{name: '分镜Agent', type: 29 },{name: '分镜深化风格', type: 30 }],
 
 	updated: [], // 新增或变更保存后增加父类typeid，关闭弹窗时传入值，父组件更新全局的项目设置SP
 	
@@ -155,7 +155,7 @@ function deleteSPItem() {
 }
 function addSPItem() {
 	var spitem = {
-		id: 0, title:'', content:'', isNew: true, isChange: true
+		id: 0, title:'请输入标题', content:'', isNew: true, isChange: true
 	}
 	state.curSPContents.push(spitem)
 	onClickEditorSPItem(state.curSPContents.length-1)
@@ -374,7 +374,7 @@ defineExpose({
 
 	.headerTitle {
 		font-size: 30px;
-		color: #F8BA38;
+		color: #333;
 		font-weight: bold;
 		flex-shrink: 0;
 		height: 44px;
@@ -402,6 +402,7 @@ defineExpose({
 		text-align: center;
 		background-color: #E7E7E7;
 		cursor: pointer;
+		color: #666666;
 
 		&:first-child {
 			border-radius: 8px 0px 0px 8px;
@@ -412,7 +413,9 @@ defineExpose({
 		}
 
 		&.active {
-			background-color: #F8BA38;
+			background-color: #2A2A2A;
+			color: #fff;
+			border-radius: 8px;
 		}
 	}
 }
@@ -449,7 +452,7 @@ defineExpose({
 			}
 
 			&.primary {
-				background-color: #409EFF;
+				background-color: #2A2A2A;
 				color: #fff;
 			}
 
@@ -457,6 +460,11 @@ defineExpose({
 				color: rgba(255, 69, 0, 1);
 				border: 1px solid rgba(255, 69, 0, 1);
 				background-color: transparent;
+			}
+
+			&.light {
+				background-color: #FFDC00;
+				color: #2A2A2A;
 			}
 		}
 	}
@@ -467,6 +475,7 @@ defineExpose({
 	border-radius: 12px 0px 0px 12px;
 	background-color: #E7E7E7;
 	padding: 24px 8px;
+	flex-shrink: 0;
 
 	.item {
 		width: 184px;
@@ -477,13 +486,15 @@ defineExpose({
 		font-weight: 500;
 		margin-bottom: 16px;
 		text-align: center;
+		color: #2A2A2A;
 
 		&:last-child {
 			margin-bottom: 0px;
 		}
 
 		&.active {
-			background: linear-gradient(90deg, #FFA600 0%, #FFDA3C 100%), #FFAB05;
+			background-color: #2A2A2A;
+			color: #fff;
 		}
 	}
 }

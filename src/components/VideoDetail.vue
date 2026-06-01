@@ -12,9 +12,14 @@
                     style="width: 23.2%;min-width: 320px;display: flex;flex-direction: column;align-items: center;padding: 0 8px 0 20px;box-sizing: border-box;height: 100%;">
                     <view class="headTitle">分镜视频详情</view>
                     <view class="section section-sp" v-if="state.historyContent">
-                        <view class="title">
-                            <image class="image" src="/static/desc_icon.png" style="width: 16px;height: 16px;"></image>
-                            <text class="text">视频提示词</text>
+                        <view style="display: flex;align-items: center;justify-content: flex-start;">
+                            <view class="title">
+                                <image class="image" src="/static/desc_icon.png" style="width: 16px;height: 16px;"></image>
+                                <text class="text">视频提示词</text>
+                            </view>
+                            <view
+                                style="margin-left: 12px;padding: 0 6px;height: 28px;line-height: 28px;text-align: center;border-radius: 4px;color: rgb(104, 108, 116);font-size: 14px;background: #f4f4f5;cursor: pointer;border: 1px solid #dcdfe6;"
+                                @click="copyContent">复制内容</view>
                         </view>
                         <view class="content" style="flex: 1;display: flex;flex-direction: column;min-height: 0;">
                             <view class="info" style="flex: 1;min-height: 0;display: flex;flex-direction: column;">
@@ -27,6 +32,7 @@
                                 <view class="tag-item">画幅 {{ state.historyContent.ratio || '' }}</view>
                                 <view class="tag-item">画质 {{ state.historyContent.resolution || '' }}</view>
                                 <view class="tag-item">时长 {{ state.historyContent.duration || '' }}</view>
+                                <view class="tag-item" v-if="state.historyContent.huafengName">画风 {{ state.historyContent.huafengName }}</view>
                                 <view class="tag-item" v-if="state.historyContent.subtitlesStatus === 1">去字幕</view>
                                 <view class="tag-item" v-if="state.historyContent.enhanceStatus === 1 && state.historyContent.templateId">超分-{{ props.enchanceMap[state.historyContent.templateId] }}</view>
                             </view>
@@ -59,7 +65,7 @@
                                             </view>
                                         </view>
                                         <image @click="deleteTask(statusindex, statusitem.taskId, 5)"
-                                            style="width: 60rpx; height: 60rpx;position: absolute;top: 6px;right: 6px;cursor: pointer;"
+                                            style="width: 56rpx; height: 56rpx;position: absolute;top: 6px;right: 4px;cursor: pointer;"
                                             src="/static/tag_shanchu.png">
                                         </image>
                                     </view>
@@ -93,10 +99,11 @@
                                             <view
                                                 style="position: absolute;top: 0;width: 100%;display: flex;justify-content: flex-end;z-index: 2;">
                                                 <image @click="deleteTask(statusindex, statusitem.taskId, 5)"
-                                                    style="width: 60rpx; height: 60rpx;cursor: pointer;top: 6px;right: 6px;"
+                                                    style="width: 56rpx; height: 56rpx;cursor: pointer;top: 6px;right: 4px;"
                                                     src="/static/tag_shanchu.png">
                                                 </image>
                                             </view>
+                                            <image v-if="statusindex == state.selectedIndex" src="/static/sel_icon_yellow.png" style="position: absolute;left: 0;top: 0; width: 48rpx;height: 48rpx;" />
                                             <view
                                                 style="color: #FFFFFF;position: absolute;bottom: 0;width: 100%;display: flex;justify-content: flex-end;z-index: 2;border-radius: 6rpx;background: rgba(0, 0, 0, 0.4);">
                                                 <view v-if="statusitem.enhanceStatus===1&&statusitem.templateId" style="width: 112rpx;height: 32rpx;background: linear-gradient(89deg, #2BE851 0%, #A5ED48 72%);border-radius: 6rpx;font-size: 20rpx;color: #333;display: flex;justify-content: center;align-items: center;">超分{{ props.enchanceMap[statusitem.templateId] }}</view>
@@ -248,43 +255,59 @@ const getDetail = () => {
     getRequest(`${APIPath.aiTask}/${id}`, (resData) => {
         if (resData.code == 200) {
             try {
-                const { paramsValue, modelId, name, modelInterface, enhanceStatus, templateId, subtitlesStatus } = resData.data;
+                const { paramsValue, modelId, name, modelInterface, enhanceStatus, templateId, subtitlesStatus,frontExpand } = resData.data;
                 const content = JSON.parse(paramsValue);
-                switch (modelInterface) {
-                    case 'seedance2': // 16 17 44 45 46 47 48 49 50 51
-                    case 'DoubaoSeedance1_5Video':
-                        state.historyContent = {
-                            prompt: content.content[0]?.text || '',
-                            ratio: content.ratio,
-                            resolution: content.resolution,
-                            duration: content.duration || '',
-                        }
-                        break;
-                    case 'aliToVideo':
-                        state.historyContent = {
-                            prompt: content.input.prompt,
-                            ratio: content.parameters.ratio,
-                            resolution: content.parameters.resolution,
-                            duration: content.parameters.duration || '',
-                        }
-                        break;
-                    case 'ViduQ3Video':
-                        state.historyContent = {
-                            prompt: content.input[0]?.params?.prompt || '',
-                            ratio: content.input[0]?.params?.aspect_ratio || '',
-                            resolution: content.input[0]?.params?.resolution || '',
-                            duration: content.input[0]?.params?.duration || '',
-                        }
-                        break;
-                    case 'KirinV3Omni':
-                        state.historyContent = {
-                            prompt: content.input[0]?.params?.prompt || '',
-                            ratio: content.input[0]?.params?.aspect_ratio || '',
-                            resolution: (content.input[0]?.params?.mode == 'std' ? '720p' : '1080p') || '',
-                            duration: content.input[0]?.params?.duration || '',
-                        }
-                        break;
+
+                //如果有新增字段，拿新增字段里面的
+                if(frontExpand){
+                    const _frontExpand = JSON.parse(frontExpand);
+                    state.historyContent = {
+                        prompt:_frontExpand.prompt,
+                        huafengName:_frontExpand.huafeng?.name,
+                        ratio:_frontExpand.ratio,
+                        resolution:_frontExpand.resolution,
+                        duration:_frontExpand.duration,
+                    }
                 }
+                // 没新增字段，从总SP里面获取并按不同模型的结构来解析
+                else{
+                    switch (modelInterface) {
+                        case 'seedance2': // 16 17 44 45 46 47 48 49 50 51
+                        case 'DoubaoSeedance1_5Video':
+                            state.historyContent = {
+                                prompt: content.content[0]?.text || '',
+                                ratio: content.ratio,
+                                resolution: content.resolution,
+                                duration: content.duration || '',
+                            }
+                            break;
+                        case 'aliToVideo':
+                            state.historyContent = {
+                                prompt: content.input.prompt,
+                                ratio: content.parameters.ratio,
+                                resolution: content.parameters.resolution,
+                                duration: content.parameters.duration || '',
+                            }
+                            break;
+                        case 'ViduQ3Video':
+                            state.historyContent = {
+                                prompt: content.input[0]?.params?.prompt || '',
+                                ratio: content.input[0]?.params?.aspect_ratio || '',
+                                resolution: content.input[0]?.params?.resolution || '',
+                                duration: content.input[0]?.params?.duration || '',
+                            }
+                            break;
+                        case 'KirinV3Omni':
+                            state.historyContent = {
+                                prompt: content.input[0]?.params?.prompt || '',
+                                ratio: content.input[0]?.params?.aspect_ratio || '',
+                                resolution: (content.input[0]?.params?.mode == 'std' ? '720p' : '1080p') || '',
+                                duration: content.input[0]?.params?.duration || '',
+                            }
+                            break;
+                    }
+                }
+
                 state.historyContent.modelName = name;
                 state.historyContent.subtitlesStatus = subtitlesStatus;
                 state.historyContent.enhanceStatus = enhanceStatus;
@@ -292,6 +315,18 @@ const getDetail = () => {
             } catch (err) {
                 console.error('解析失败:', err);
             }
+        }
+    })
+}
+
+const copyContent = () => {
+    uni.setClipboardData({
+        data: state.historyContent.prompt,
+        success: () => {
+            uni.showToast({ title: '复制成功', icon: 'none' })
+        },
+        fail: (err) => {
+            console.error('复制失败', err)
         }
     })
 }

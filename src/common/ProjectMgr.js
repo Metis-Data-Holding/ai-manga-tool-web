@@ -479,7 +479,9 @@ export function getTaskBaseInfo(taskId){
   getRequest(APIPath.aiTaskInfo+'/'+taskId,(resData)=>{
     if(resData.code==200){
       try{
-        const responseContent = JSON.parse(decodeURIComponent(resData.data?.queue?.content))
+        const queue = resData.data?.queue;
+        const content = queue.content || queue.result || ''
+        const responseContent = JSON.parse(content)
         if(responseContent?.error?.message){
           uni.showModal({
             title:`任务${taskId}`,

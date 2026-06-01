@@ -108,7 +108,8 @@ export function seedance2Video(config,callback,errorCallback,extract={}){
             })
         ]
     }
-    var body={    
+    var body={
+        frontExpand:config.frontExpand,    
         content,
         resolution:config.resolution?.toLocaleLowerCase(),
         ratio:config.ratio,
@@ -149,6 +150,7 @@ export function aliToVideo(config,callback,errorCallback,extract={type:'referenc
     }
 
     var body={
+        frontExpand:config.frontExpand,
         input: {
             media: [],
             prompt: config.sp,
@@ -199,6 +201,7 @@ export function aliToVideo(config,callback,errorCallback,extract={type:'referenc
 
 export function ViduQ3Video(config,callback,errorCallback) {
     var body={
+        frontExpand:config.frontExpand,
         input:[
             {
                 params:{
@@ -323,6 +326,7 @@ export function DoubaoSeedance1_5Video(config,callback,errorCallback) {
     ]
     
     var body={
+        frontExpand:config.frontExpand,
         content:bodycontent,
         resolution: config.resolution?.toLocaleLowerCase(),
         ratio: config.ratio,
@@ -478,6 +482,7 @@ export function KirinV3OmniVideo(config,callback,errorCallback,extractConfig={})
         }
     }
     var body={
+        frontExpand:config.frontExpand,
         input:[
             {
                 params:{
@@ -538,6 +543,7 @@ export function Doubaoseedream5_0liteTextImage(configs,callback,errorCallback){
     const params = [];
     for(const config of configs){
         const obj = {
+            frontExpand: config.frontExpand,
             projectId: config.projectId,
             modelId: config.modelId,
             prompt: config.prompt,
@@ -557,7 +563,6 @@ export function Doubaoseedream5_0liteTextImage(configs,callback,errorCallback){
 
         params.push(obj)
     }
-
     postRequest(APIPath.doubaoseedream5_0lite,params,(resData)=>{
         if(resData.code==200){
             if(callback)
@@ -579,6 +584,7 @@ export function BananaTextImage(configs,callback,errorCallback){
     const params = [];
     for(const config of configs){
         const obj = {
+            frontExpand: config.frontExpand,
             projectId: config.projectId,
             modelId: config.modelId,
             input: [{
@@ -632,6 +638,7 @@ export function KirinV3TextImage(configs,callback,errorCallback){
     const params = [];
     for(const config of configs){
         const obj = {
+            frontExpand: config.frontExpand,
             projectId: config.projectId,
             modelId: config.modelId,
             input: [{
@@ -729,4 +736,24 @@ export function aliCreateWord(config,successCallback,errorCallback){
                 errorCallback(error)
             }
     },{timeout:300000})
+}
+
+export function AIChat(config){
+    return new Promise((resolve, reject) => {
+        postRequest(APIPath.chat,config,(resData)=>{
+            if(resData.code==200){
+                try{
+                    const data = JSON.parse(resData.msg)
+                    resolve(data.choices[0].message.content)
+                }catch(error){
+                    console.warn(error)
+                }
+            }
+            else{
+                reject(resData.msg)
+            }
+        },(error)=>{
+            reject(error)
+        },{timeout:300000})
+    })
 }

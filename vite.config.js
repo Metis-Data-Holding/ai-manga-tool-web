@@ -9,7 +9,7 @@ export default defineConfig({
   server: {
   		proxy: {
   			'/server': {
-  				target: 'https://assetapi.jigentoys.net', //https://assetapi.jigentoys.net/ //http://192.168.15.231:8080/
+  				target: 'https://assetapi.jigentoys.net/', //https://assetapi.jigentoys.net/ //http://192.168.15.231:8080/ http://assetapi.meiai.store/
   				changeOrigin: true,
   				rewrite: (path) => path.replace(/^\/server/, ''), // 此处进行路径重写
 				secure: false,

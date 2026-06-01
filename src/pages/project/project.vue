@@ -30,7 +30,7 @@
 
 				<view style="height: 80rpx; background-color: #ffffff;margin-top: 4rpx;margin-bottom: 4rpx;display: flex;justify-content: center; flex-direction: row;align-items: center;padding-top: 16rpx;padding-bottom: 16rpx;">
 					<image src="/static/tiliicon.png" style="width: 40rpx;height: 40rpx;"></image>
-					<text style="font-size: 32rpx;margin-left: 12rpx;color: #333333;font-weight: 500;">今日消耗：99999</text>
+					<text style="font-size: 32rpx;margin-left: 12rpx;color: #333333;font-weight: 500;">剩余积分：{{ store.getters.remainingPoints || '-' }}</text>
 				</view>
 
 				<view style="background-color: #ffffff;height: 100rpx;display: flex;justify-content: flex-start; flex-direction: row;align-items: center;padding-top: 16rpx;padding-bottom: 30rpx;">
@@ -186,11 +186,11 @@
 	import createOReditorRes from "../../components/createOReditorRes.vue";
 	import batchCreateRes from "../../components/batchCreateRes.vue";
 	import resourceDetail from "@/components/resourceDetail/resourceDetail.vue";
-	import SkillManagement from "@/components/SkillManagement.vue";
 	import { GetProjectList,DeleteeProject } from "../../common/ProjectMgr";
 	import { isNull } from "../../common/Tool";
 	import app from "@/App.vue";
 	import { useStore } from "vuex";
+	import SkillManagement from "@/components/SkillManagement.vue";
 	const store = useStore();
 	const _app = app;
 	const state=reactive({
@@ -199,7 +199,7 @@
 			{name:"公共库",type:1,icon:"/static/publicIcon.png"},
 			{name:"新建项目",type:3,icon:"/static/newProject.png"},
 			{name:"我的项目",type:2,icon:"/static/proNameIcon.png"},
-			{name:"SKILL 管理",type:4,icon:"/static/projecticon.png"}
+			{name:"SKILL管理",type:4,icon:"/static/publicIcon.png"}
 		],
 		curLeftTitleType:2,
 		curProjectStatusType:0,
@@ -232,8 +232,6 @@
 			defaultModel:'13',
 		}
 	})
-
-	const token=store.state.token
 
 	onLoad((options)=>{
 		if(options.tabindex){

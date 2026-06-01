@@ -101,7 +101,7 @@ const handleClick = (index,itemID) => {
 
         &.active,
         &:hover {
-            background-color: #F8BA38;
+            background-color: #FFDC00;
         }
 
 

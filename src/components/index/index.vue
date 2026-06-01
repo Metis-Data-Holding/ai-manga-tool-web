@@ -13,32 +13,32 @@
 
 			<view id="ah-col2" style="display: flex;flex-direction: row;flex: 1; height: 112rpx;align-items: center;background: #FFFFFF;margin-left: 4rpx;" :style="{justifyContent: projectType!=2?'space-between':'flex-start' }">
 				<view id="ah-col2-1" style="display: flex;flex-direction: row;">
-					<button @click="selectAllRongtuOrVideoSP(true)" style="width: 128rpx;height: 72rpx;background: #409EFF;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #FFFFFF;margin:0;margin-left:24rpx;">全选</button>
+					<button @click="selectAllRongtuOrVideoSP(true)" style="width: 128rpx;height: 72rpx;background: #2A2A2A;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #FFFFFF;margin:0;margin-left:24rpx;">全选</button>
 					<button @click="selectAllRongtuOrVideoSP(false)" style="width: 128rpx;height: 72rpx;background: #F3F3F3;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;">取消</button>
-					<button v-if="projectType==2" v-debounce.click="{handler:allCreateImage,immediate:true,delay:500}" style="width: 280rpx;height: 72rpx;background: #F8BA38;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;margin-right: 16rpx;">一键融图</button>
-					<button v-debounce.click="{handler:()=>saveCameraConfig({showSuccessToast:true}),immediate:true,delay:500}" style="width: 128rpx;height: 72rpx;background: #409EFF;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #FFFFFF;margin:0;margin-left:16rpx;">保存</button>
+					<button v-if="projectType==2" v-debounce.click="{handler:allCreateImage,immediate:true,delay:500}" style="width: 280rpx;height: 72rpx;background: #FFDC00;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;margin-right: 16rpx;">一键融图</button>
+					<button v-debounce.click="{handler:()=>saveCameraConfig({showSuccessToast:true}),immediate:true,delay:500}" style="width: 128rpx;height: 72rpx;background: #2A2A2A;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #FFFFFF;margin:0;margin-left:16rpx;">保存</button>
 				</view>
 				<view id="ah-col2-2" style="display: flex;flex-direction: row;">
 					<!-- <button  @click="getRongtuImage()" style="width: 240rpx;height: 72rpx;background: #F3F3F3;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;">重新匹配资产</button> -->
-					<button v-if="projectType==2" @click="selectAllVideoSP(true)" style="width: 128rpx;height: 72rpx;background: #409EFF;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #FFFFFF;margin:0;margin-left:24rpx;">全选</button>
+					<button v-if="projectType==2" @click="selectAllVideoSP(true)" style="width: 128rpx;height: 72rpx;background: #2A2A2A;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #FFFFFF;margin:0;margin-left:24rpx;">全选</button>
 					<button v-if="projectType==2" @click="selectAllVideoSP(false)" style="width: 128rpx;height: 72rpx;background: #F3F3F3;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;">取消</button>
-					<button v-if="projectType != 2 && !isDemoPersonal" style="width: 220rpx;height: 72rpx;background: #E7E7E7;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;margin-right: 16rpx;" @click="()=>cameraOptimizationPopupOpen()">
+					<button v-if="projectType != 2" style="width: 220rpx;height: 72rpx;background: #E7E7E7;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;margin-right: 16rpx;" @click="()=>cameraOptimizationPopupOpen()">
 						<image style="width: 16px;height: 16px;vertical-align: middle;margin-right: 6px;" src="/static/star_icon.png" mode="heightFix"></image>
-						<text>分镜优化</text>
+						<text>分集优化</text>
 					</button>
-					<button v-debounce.click="{handler:allCreateVideo,immediate:true,delay:500}" style="width: 280rpx;height: 72rpx;background: #F8BA38;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;margin-right: 16rpx;">一键生成视频</button>
+					<button v-debounce.click="{handler:allCreateVideo,immediate:true,delay:500}" style="width: 280rpx;height: 72rpx;background: #FFDC00;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;margin-right: 16rpx;">一键生成视频</button>
 				</view>
 			</view>
 
 			<view style="flex-shrink: 0;display: flex;flex-direction: row;width: 383px; height: 112rpx;align-items: center;justify-content: space-between;background: #FFFFFF;margin-left: 4rpx;border-radius: 0px 24rpx 24rpx 0px">
 				<view style="display: flex;flex-direction: row;">
-					<button @click="selectAllVideoResult(true)" style="width: 128rpx;height: 72rpx;background: #409EFF;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #FFFFFF;margin:0;margin-left:24rpx;">全选</button>
+					<button @click="selectAllVideoResult(true)" style="width: 128rpx;height: 72rpx;background: #2A2A2A;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #FFFFFF;margin:0;margin-left:24rpx;">全选</button>
 					<button @click="selectAllVideoResult(false)" style="width: 128rpx;height: 72rpx;background: #F3F3F3;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;">取消</button>
 				</view>
 
 				<view style="display: flex;flex-direction: row;">
-					<button v-if="false" @click="AllVideo1080P()" style="width: 168rpx;height: 72rpx;background: #F8BA38;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;">一键超分</button>
-					<button @click="downloadAllVideo()" style="min-width: 168rpx;height: 72rpx;background: #F8BA38;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;margin-right: 16rpx;display: flex;align-items: center;">
+					<button v-if="false" @click="AllVideo1080P()" style="width: 168rpx;height: 72rpx;background: #FFDC00;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;">一键超分</button>
+					<button @click="downloadAllVideo()" style="min-width: 168rpx;height: 72rpx;background: #FFDC00;border-radius: 8rpx;font-size: 28rpx;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;margin-right: 16rpx;display: flex;align-items: center;">
 						<view v-if="state.downloadCount>0" class="loading-circle" :style="{ borderColor: '#000', borderTopColor: 'transparent',width:'16px',height:'16px' }"></view>
 						<text style="padding-left: 6px;">一键下载</text>
 					</button>
@@ -47,7 +47,7 @@
 		</view>
 		<!-- 分镜列表 -->
 	    <view style="display: flex;flex-direction: row;width: 100%;margin-top: 12rpx;align-items: flex-start;height: 1200rpx;flex: 1;">
-			<scroll-view style="display: flex;height: 100%;padding-left: 32rpx;padding-right: 32rpx;" :scroll-y="true" show-scrollbar>
+			<scroll-view id="camera-list" style="display: flex;height: 100%;padding-left: 32rpx;padding-right: 32rpx;" :scroll-y="true" show-scrollbar>
 				<block v-for="(item, index) in state.cameraList" :key="index">
 					<view :class="['camera-item', { 'camera-item--hover': state.dragHoverIndex === index }]" 
 						style="display: flex;flex-direction: row;margin-bottom: 24rpx;width: 100%;justify-content: flex-start;align-items: flex-start;height: 320px;position: relative;">
@@ -230,7 +230,7 @@
 										</image>
 										<view style="display: flex;align-items: center;">								
 											<text style="font-size: 32rpx;font-weight: 500;">镜头内容</text>
-											<button v-if="projectType != 2 && !isDemoPersonal" style="height: 60rpx;background: #E7E7E7;border-radius: 8rpx;font-size: 14px;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;display: flex;align-items: center;justify-content: center;padding: 0 8px;" @click="()=>cameraOptimizationPopupOpen(index)">
+											<button v-if="projectType != 2" style="height: 60rpx;background: #E7E7E7;border-radius: 8rpx;font-size: 14px;font-weight: 500; color: #333333;margin:0;margin-left:16rpx;display: flex;align-items: center;justify-content: center;padding: 0 8px;" @click="()=>cameraOptimizationPopupOpen(index)">
 												<image style="width: 14px;height: 14px;vertical-align: middle;margin-right: 6px;" src="/static/star_icon.png" mode="heightFix"></image>
 												<text>分镜优化</text>
 											</button>
@@ -253,18 +253,18 @@
 											<text style="font-size: 24rpx;margin-left: 16rpx;">生成秒数</text>
 											<view style="margin-left: 16rpx;display: flex;flex-wrap: wrap; align-items: center;gap: 10rpx;margin-top: 12rpx;">
 												<block v-for="(seconditem,secondindex) in [4,5,6,7,8,9,10,11,12,13,14,15]" :key="secondindex">
-													<button @click="selectVideoTime(index,seconditem)" :style="'margin: 0; margin-right: 8rpx; font-size: 24rpx;width: 120rpx;height: 50rpx;display:flex;justify-content: center;align-items: center;background:'+(seconditem==item.videotime?'#F8BA38':'#FFFFFF')+';color:'+(seconditem==item.videotime?'#FFFFFF':'#000000')+';'">{{seconditem}}S</button>
+													<button @click="selectVideoTime(index,seconditem)" :style="'margin: 0; margin-right: 8rpx; font-size: 24rpx;width: 120rpx;height: 50rpx;display:flex;justify-content: center;align-items: center;background:'+(seconditem==item.videotime?'#2A2A2A':'#FFFFFF')+';color:'+(seconditem==item.videotime?'#FFFFFF':'#000000')+';'">{{seconditem}}S</button>
 												</block>
 											</view>
 											<text style="font-size: 24rpx;margin-left: 16rpx;">生成数量</text>
 											<view style="margin-left: 16rpx;display: flex;flex-wrap: wrap; align-items: center;gap: 10rpx;margin-top: 12rpx;">
 												<block v-for="(countitem,countindex) in [1,2]" :key="countindex">
-													<button @click="videoCountInput(index,countitem)" :style="'margin: 0; margin-right: 8rpx; font-size: 24rpx;width: 120rpx;height: 50rpx;display:flex;justify-content: center;align-items: center;background:'+(countitem==item.createVideoCount?'#F8BA38':'#FFFFFF')+';color:'+(countitem==item.createVideoCount?'#FFFFFF':'#000000')+';'">{{countitem}}</button>
+													<button @click="videoCountInput(index,countitem)" :style="'margin: 0; margin-right: 8rpx; font-size: 24rpx;width: 120rpx;height: 50rpx;display:flex;justify-content: center;align-items: center;background:'+(countitem==item.createVideoCount?'#2A2A2A':'#FFFFFF')+';color:'+(countitem==item.createVideoCount?'#FFFFFF':'#000000')+';'">{{countitem}}</button>
 												</block>
 											</view>
 										</view>
 										<view style="padding: 0 16rpx;box-sizing: border-box; background: #E7E7E7;height: 94rpx;display: flex;flex-direction: column;align-items: center;justify-content: center;" :style="{borderBottomRightRadius:projectType!=2?'16rpx':'0'}">
-											<button v-debounce.click="{handler:()=>onClickcreateVideo(index),immediate:true,delay:500}" style="width: 100%;height: 60rpx;background: #F8BA38;font-size: 24rpx;font-weight: 500;display:flex;justify-content: center;align-items: center;">生视频</button>
+											<button v-debounce.click="{handler:()=>onClickcreateVideo(index),immediate:true,delay:500}" style="width: 100%;height: 60rpx;background: #FFDC00;font-size: 24rpx;font-weight: 500;display:flex;justify-content: center;align-items: center;">生视频</button>
 										</view>
 									</view>									
 								</view>
@@ -287,7 +287,7 @@
 															<view @click="getTaskInfo(statusitem.taskId)" style="font-size: 20rpx;color: #FFFFFF;font-weight: 500;width: 108rpx;height: 36rpx;line-height: 36rpx; background: #FF5757;border-radius: 18rpx;display: flex;justify-content: center;align-items: center;cursor: pointer;">查看原因</view>
 														</view>
 													</view>
-														<image @click="deleteTask(index,statusindex,statusitem.taskId,5)" style="width: 60rpx; height: 60rpx;position: absolute;top: 6px;right: 6px;cursor: pointer;" src="/static/tag_shanchu.png">
+														<image @click="deleteTask(index,statusindex,statusitem.taskId,5)" style="width: 54rpx; height: 54rpx;position: absolute;top: 6px;right: 4px;cursor: pointer;" src="/static/tag_shanchu.png">
 															</image>
 												</view>
 												<view v-else-if="[0,2,13,15].includes(statusitem.status)" style="display: flex;flex-direction: column;align-items: center;margin-left:16rpx;display: inline-block;margin-top: 16rpx;">
@@ -301,11 +301,12 @@
 												</view>
 												<view v-else-if="statusitem.status==5" style="display: flex;flex-direction: column;align-items: center;margin-left:16rpx;display: inline-block;margin-top: 16rpx;">
 													<view :style="'width: 152rpx;height: 340rpx;background: #E7E7E7;border-radius: 8rpx;display: flex;align-items: center;justify-content: center;position: relative;border: 4px solid ' + (item.videoResultUrl==statusitem.url?'#FCC34A':'rgba(0, 0, 0, 0)') + ';overflow: hidden;'">
-														<video @click="selectResultVideo(index,statusitem.url)" style="width: 100%;height: 100%" :src="statusitem.url" :controls="false" :show-fullscreen-btn="false" :show-center-play-btn="false" object-fit="contain"></video>
+														<video @click="selectResultVideo(index,statusitem.url,false)" @dblclick="selectResultVideo(index,statusitem.url)" style="width: 100%;height: 100%" :src="statusitem.url" :controls="false" :show-fullscreen-btn="false" :show-center-play-btn="false" object-fit="contain"></video>
 														<view style="position: absolute;top: 0;width: 100%;display: flex;justify-content: flex-end;z-index: 2;">
-															<image @click="deleteTask(index,statusindex,statusitem.taskId,5)" style="width: 60rpx; height: 60rpx;cursor: pointer;top: 6px;right: 6px;" src="/static/tag_shanchu.png">
+															<image @click="deleteTask(index,statusindex,statusitem.taskId,5)" style="width: 54rpx; height: 54rpx;cursor: pointer;top: 6px;right: 4px;" src="/static/tag_shanchu.png">
 															</image>
 														</view>
+														<image v-if="item.videoResultUrl==statusitem.url" src="/static/sel_icon_yellow.png" style="position: absolute;left: 0;top: 0; width: 48rpx;height: 48rpx;" />
 														<view style="display: flex;flex-direction: column;align-items: flex-end; color: #FFFFFF;position: absolute;bottom: 0;width: 100%;z-index: 2;border-radius: 6rpx;background: rgba(0, 0, 0, 0.4);">
 															<view v-if="statusitem.enhanceStatus===1&&statusitem.templateId" style="width: 112rpx;height: 32rpx;background: linear-gradient(89deg, #2BE851 0%, #A5ED48 72%);border-radius: 6rpx;font-size: 20rpx;color: #333;display: flex;justify-content: center;align-items: center;">超分{{ state.enchanceMap[statusitem.templateId] }}</view>
 															<view v-if="statusitem.subtitlesStatus===1" style="width: 60rpx;height: 32rpx;background: rgba(0, 0, 0, 0.4);border-radius: 6rpx;font-size: 20rpx;color: #FFFFFF;display: flex;justify-content: center;align-items: center;margin-top: 2px;">去字幕</view>
@@ -330,7 +331,7 @@
 											<button @click="subtitlesVideo(index,item.videoResultUrl,item.videoStatusList)" style="margin: 0;margin-right: 12rpx; height: 60rpx;min-width: 120rpx;display: flex;justify-content: center;align-items: center;font-size: 14px;color: #333333;">
 												<text>去字幕</text>
 											</button>
-											<button @click="downloadVideo(index,item.videoResultUrl)" style="margin: 0;margin-right: 12rpx; height: 60rpx;min-width: 120rpx;display: flex;justify-content: center;align-items: center;font-size: 14px;color: #333333;">
+											<button @click="downloadVideo(index,item.videoResultUrl)" style="margin: 0;margin-right: 12rpx; height: 60rpx;min-width: 120rpx;display: flex;justify-content: center;align-items: center;font-size: 14px;color: #333333;background-color: #FFDC00;">
 												<image src="/static/download.png" style="width: 14px;height: 14px;" mode="widthFix"></image>
 												<text>下载</text>
 											</button>
@@ -385,7 +386,11 @@
 	<PopupCameraOptimization
 		v-if="cameraOptimizationPopup.visible" 
 		:data="cameraOptimizationPopup.data" 
-		:projectId="props.projectConfig.id" 
+		:projectId="props.projectConfig.id"
+		:episodesId="state.curepisodesId"
+		:episodeContent="cameraOptimizationPopup.episodeContent"
+		:tag="cameraOptimizationPopup.tag"
+		:agentList="state.agentList"
 		@close="cameraOptimizationPopup.visible = false"
 		@update="handleCameraContentUpdate">
 	</PopupCameraOptimization>
@@ -427,7 +432,7 @@
 	import { useStore } from "vuex";
 	import { APIPath, getRequest, postRequest } from "../../common/APIRequest";
 	import {GetDict} from "@/common/Common";
-	import PopupCameraOptimization from '@/components/PopupCameraOptimization.vue';	
+	import PopupCameraOptimization from "../PopupCameraOptimization.vue";
 	
 	const store = useStore();
 
@@ -545,10 +550,33 @@
 
 		spContent:{
 			rongtu_huafeng:'', //融图画风
+			rongtu_huafeng_id:'', //融图画风ID
 			video_huafeng:'', // 视频画风
+			video_huafeng_id:'', //视频画风ID
 		},
 
-		enchancedVideoConfig:[], // 超分配置字典数据
+		enchancedVideoConfig:[
+			{
+				"dictCode": "2052290203854331905",
+				"dictLabel": "2K",
+				"dictValue": "101560",
+			},
+			{
+				"dictCode": "2052290285026697217",
+				"dictLabel": "4k",
+				"dictValue": "101580",
+			},
+			{
+				"dictCode": "2052290459270668289",
+				"dictLabel": "720P",
+				"dictValue": "101520",
+			},
+			{
+				"dictCode": "2052290367205695489",
+				"dictLabel": "1080P",
+				"dictValue": "101540",
+			}
+		], // 超分配置字典数据
 		enchancedVideoIndex:-1, // 当前选中的超分配置索引
 		
 		showCameraOptimization:true, // 分镜优化弹窗显示状态
@@ -558,13 +586,19 @@
 			101580:'4k',
 			101520:'720p',
 			101540:'1080p',
-		}
+		},
+
+		rongtuSPList:[], // 融图画风SP列表
+		videoSPList:[], // 视频画风SP列表
 	})
 
 	// 分镜优化弹窗配置
 	const cameraOptimizationPopup = reactive({
 		visible:false,
-		data:[]
+		episodeContent:'',
+		tag:'',
+		data:[],
+		type:1, // 1 单独优化 2 全集优化
 	})
 
 	// 分镜添加弹窗配置
@@ -614,8 +648,6 @@
 	const projectType = computed(()=>{
 		return props.projectConfig?.type
 	})
-
-	const isDemoPersonal = store.getters.roles.includes('demo_personal')
 
 	watch(()=>props.projectConfig.projectConfig,(newVal)=>{
 		if(newVal){
@@ -679,6 +711,9 @@
 		// 获取超分列表
 		GetDict('enhanced_video').then((data)=>{
 			state.enchancedVideoConfig = data
+			for(let item of data){
+				state.enchanceMap[item.dictValue]=item.dictLabel
+			}
 		})
 
 	})
@@ -814,13 +849,13 @@
 		if(!content){
 			return { secondNum: 4, cleanContent: '' };
 		}
-		const regex = /时长：\s*[\d.]+\s*(秒|s)/i;
-		const numRegex = /时长：\s*([\d.]+)\s*(秒|s)/i;
+		const regex = /时长[:：]\s*[\d.]+\s*(秒|s)/i;
+		const numRegex = /时长[:：]\s*([\d.]+)\s*(秒|s)/i;
 		const numMatch = content.match(numRegex);
 		let secondNum = numMatch ? Math.ceil(numMatch[1]) : 4;
 		secondNum = secondNum>15?15:secondNum
 		const cleanContent = content
-			.replace(regex, '') 
+			.replace(numRegex, '') 
 			.replace(/^\s+|\s+$/gm, '')
 			.trim();
 
@@ -916,46 +951,45 @@
 
 					element.videoStatusList=[];
 					element.imageStatusList = [];
-					element.superResolution = 0;		
+					element.superResolution = 2;		
 
-					var extractContent= extractContentByColon(element.fenjinContent);
-					let rs = cloneDeep(element.rongtuImages.concat(element.cankaoVieoImages||[])).sort((prev,next)=>next.name?.length-prev.name?.length);
-					for (let index = 0; index < extractContent.length; index++) {
-						const item = extractContent[index];
-						// if(item.title=='核心人物' || item.title=='关键道具' || item.title=='场景背景'){
-						if(['角色','场景','道具','运镜','音频'].includes(item.title)){
-							var roles= item.content.split(/[，,、]{1}/);
-							for (let i = 0; i < roles.length; i++) {
-								const regex = /[@]?(图片|视频|音频|未知)\d?/g;
-								const roleName = roles[i].replace(regex, '').replace(/[\u200B\uFEFF\s]+/g, '').trim();
-								// const roleName = roles[i];
-								if(item.title=='音频'){
-									rs = rs.filter(item=>item._type=='audio')
-								}else{
-									rs = rs.filter(item=>item._type!='audio')
-								}
-								var findIndex= rs.findIndex(item=>roleName.includes(item.name));
-								var findImageName='';
-								if(findIndex>-1){
-									findImageName=rs[findIndex]._tagName
-									roles[i]=`${roleName}@${findImageName}`
-								}else{
-									roles[i]=roleName
-								}
-								// console.log('角色==',roles[i])
-							}
-							item.content=roles.join('、')
-							// console.log('匹配后的名字',item.content)
-						}
-					}
-
-					extractContent.length>0 && (element.fenjinContent=extractContent.map(item=>{
-						if(item.title){
-							return item.title+':'+item.content
-						}else{
-							return item.content
-						}
-					}).join('\n'))
+					// var extractContent= extractContentByColon(element.fenjinContent);
+					// let rs = cloneDeep(element.rongtuImages.concat(element.cankaoVieoImages||[])).sort((prev,next)=>next.name?.length-prev.name?.length);
+					// for (let index = 0; index < extractContent.length; index++) {
+					// 	const item = extractContent[index];
+					// 	// if(item.title=='核心人物' || item.title=='关键道具' || item.title=='场景背景'){
+					// 	if(['角色','场景','道具','运镜','音频'].includes(item.title)){
+					// 		var roles= item.content.split(/[，,、]{1}/);
+					// 		for (let i = 0; i < roles.length; i++) {
+					// 			const regex = /[@]?(图片|视频|音频|未知)\d?/g;
+					// 			const roleName = roles[i].replace(regex, '').replace(/[\u200B\uFEFF\s]+/g, '').trim();
+					// 			// const roleName = roles[i];
+					// 			if(item.title=='音频'){
+					// 				rs = rs.filter(item=>item._type=='audio')
+					// 			}else{
+					// 				rs = rs.filter(item=>item._type!='audio')
+					// 			}
+					// 			var findIndex= rs.findIndex(item=>roleName===item.name);
+					// 			var findImageName='';
+					// 			if(findIndex>-1){
+					// 				findImageName=rs[findIndex]._tagName
+					// 				roles[i]=`${roleName}@${findImageName}`
+					// 			}else{
+					// 				roles[i]=roleName
+					// 			}
+					// 			// console.log('角色==',roles[i])
+					// 		}
+					// 		item.content=roles.join('、')
+					// 		// console.log('匹配后的名字',item.content)
+					// 	}
+					// }
+					// extractContent.length>0 && (element.fenjinContent=extractContent.map(item=>{
+					// 	if(item.title){
+					// 		return item.title+':'+item.content
+					// 	}else{
+					// 		return item.content
+					// 	}
+					// }).join('\n'))
 					
 					var { secondNum, cleanContent } = extractSecondAndRemoveDuration(element.videoContentSP);
 					//  console.log('时长==',secondNum)
@@ -1304,8 +1338,8 @@
 }
 
 //选择视频结果
-  function selectResultVideo(index,videoUrl){
-		state.showVideoDetail = true;
+  function selectResultVideo(index,videoUrl,isOpenPreviewVideo=true){
+		isOpenPreviewVideo && (state.showVideoDetail = true);
 		state.curCameraIndex = index;
 
 	    if(state.cameraList[index].videoResultUrl==videoUrl){
@@ -1464,12 +1498,19 @@
 		let voice='';
 		let feature = '';
 		let combineSP = '';
+		let frontExpand = {};
 		// var tempVideoSP=state.cameraList[index].videoSP
 		var styleSP= state.spContent.video_huafeng || props.projectConfig.projectConfig.videoConfig.rtSp;
+		let styleSPId= state.spContent.video_huafeng_id || props.projectConfig.projectConfig.videoConfig.rtSpId;
+		let styleSPName = state.videoSPList.find(item => item.id == styleSPId)?.name || '';
 		let modelId = props.projectConfig.projectConfig.videoConfig.defaultModel;
 		let modelInterface = state.agentList.find((item) => item.id == modelId)?.modelInterface;
 		let reviewPlatform = state.agentList.find((item) => item.id == modelId)?.reviewPlatform;
-		const isSeedance2 = ['16','17'].includes(modelId); // 是seedance2且适用于仿真人id的模型的id集合
+		let requiresReviewModelIds = ['16','17',16,17];
+		if(store.getters.platformType==2){
+			requiresReviewModelIds = ['63','64',63,64];
+		}
+		let requiresReview = requiresReviewModelIds.includes(modelId); // 是seedance2且适用于仿真人id的模型的id集合
 		// if(isNull(tempVideoSP)){
 		// 	tempVideoSP=props.projectConfig.projectConfig.videoConfig.rtSp
 		// }
@@ -1495,14 +1536,14 @@
 				var urlType=checkMediaType(autos[i].url)
 				const targetReviewItem = autos[i].assets?.find((item) => item.platform == reviewPlatform);
 				if(urlType=='image'){									
-					if(isSeedance2 && targetReviewItem?.content){
+					if(requiresReview && targetReviewItem?.content){
 						tempimages.push(`asset://${targetReviewItem.content}`)
 					}else{
 						tempimages.push(autos[i].url)
 					}
 				}
 				else if(urlType=='video'){
-					if(isSeedance2 && targetReviewItem?.content){
+					if(requiresReview && targetReviewItem?.content){
 						tempvideos.push(`asset://${targetReviewItem.content}`)
 					}else{
 						tempvideos.push(autos[i].url)
@@ -1520,14 +1561,14 @@
 				var urlType=checkMediaType(adds[i].url)
 				const targetReviewItem = adds[i].assets?.find((item) => item.platform == reviewPlatform);
 				if(urlType=='image'){
-					if(isSeedance2 && targetReviewItem?.content){
+					if(requiresReview && targetReviewItem?.content){
 						tempimages.push(`asset://${targetReviewItem.content}`)
 					}else{
 						tempimages.push(adds[i].url)
 					}
 				}
 				else if(urlType=='video'){
-					if(isSeedance2 && targetReviewItem?.content){
+					if(requiresReview && targetReviewItem?.content){
 						tempvideos.push(`asset://${targetReviewItem.content}`)
 					}else{
 						tempvideos.push(adds[i].url)
@@ -1568,13 +1609,29 @@
 			combineSP=combineSP+"\n"+feature.slice(0,-1)
 		}
 
+		frontExpand.prompt = combineSP;
+
 		// 加入画风
 		if(!isNull(styleSP)){
 			combineSP=combineSP+"\n画面风格："+styleSP
+			frontExpand.huafeng = {
+				id:styleSPId,
+				name:styleSPName,
+				content:styleSP
+			}
 		}
+
+		// 加入视频参数分开存储，方便后续需要获取某个参数
+		frontExpand.ratio = props.projectConfig.projectConfig.videoConfig.defaultFrame;
+		frontExpand.resolution = props.projectConfig.projectConfig.videoConfig.defaultResolution;
+		frontExpand.urls = tempimages;
+		frontExpand.duration = time;
+		frontExpand.videos = tempvideos;
+		frontExpand.audios = tempaudios;
 
 		var tempConfig={
 			sp:combineSP,
+			frontExpand:JSON.stringify(frontExpand),
 			// imageurls:state.cameraList[index].cankaoVieoImages.map(item=>item.url),
 			imageurls:tempimages,
 			time:time,
@@ -1607,6 +1664,7 @@
 		if(projectType.value==1){
 			switch(modelInterface){
 				case 'seedance2': // seedance2 16 17 44 45 46 47 78 49 50 51
+				case 'DoubaoSeedance1_5Video': // 4 23 63 64
 					if(tempConfig.imageurls.length>9 || tempConfig.videos.length>3 || tempConfig.audios.length>3){
 						uni.showToast({
 							title: 'seedance2模型参数已达上限，仅允许9张图片、3个视频、3个音频',
@@ -1911,7 +1969,7 @@
 							}else{
 								rs = rs.filter(item=>item._type!='audio')
 							}
-							var findIndex= rs.findIndex(item=>roleName.includes(item.name));
+							var findIndex= rs.findIndex(item=>roleName===item.name);
 							var findImageName='';
 							if(findIndex>-1){
 								findImageName=rs[findIndex]._tagName
@@ -2458,8 +2516,6 @@
 						console.warn('生成资源标签失败', e);
 					}
 					// console.log("newUploadFile:", newUploadFile);
-					// 添加到额外参考资源列表
-					dragCameraItem.cankaoVieoImages.push(newUploadFile);
 				
 					nextTick(()=>{
 						// 只更新当前 item 的 scrollLeft
@@ -2480,6 +2536,9 @@
 						};
 
 						AddNewResource(newConfig, resData => {
+						// 添加到额外参考资源列表
+						resData?.data && (newUploadFile.id = resData?.data)
+						dragCameraItem.cankaoVieoImages.push(newUploadFile);
 							resolve();
 						
 						}, error => {
@@ -2583,9 +2642,13 @@
 					fenjinContent:i.fenjinContent,
 					videoContentSP:i.videoContentSP,
 					id:i.id,
-					name:i.name
+					name:i.name,
+					episodesId:state.curepisodesId,
+					projectId:props.projectConfig.id,
+					chatSessionId:i.chatSessionId
 				}
 			}));
+			cameraOptimizationPopup.type=1;	
 		}else{
 			cameraOptimizationPopup.data = cloneDeep(state.cameraList.map(i=>{
 				return{
@@ -2595,22 +2658,48 @@
 					name:i.name
 				}
 			}));
+			const targetEpisode = state.fenjiList.find(item => item.id == state.curepisodesId)
+			cameraOptimizationPopup.episodeContent = targetEpisode.content;
+			cameraOptimizationPopup.tag = targetEpisode.collectId + "_" + targetEpisode.fieldId + "_";
+			cameraOptimizationPopup.type=2;	
 		}	
 		cameraOptimizationPopup.visible = true;
 	}
 
-	function handleCameraContentUpdate(data){
-		for(let item of state.cameraList){
-			for(let n=0; n<data.length; n++){
-				if(item.id==data[n].id){
-					item.fenjinContent = data[n].fenjinContent;
-					item.videoContentSP = data[n].videoContentSP;
-					data.splice(n,1);
-					break;
+	function handleCameraContentUpdate(data,isSaveCameraConfig=false){
+		// 按集
+		if(cameraOptimizationPopup.type==2){
+			state.cameraList = data.map(i=>{
+				var { secondNum, cleanContent } = extractSecondAndRemoveDuration(i.videoContentSP);
+				//  console.log('时长==',secondNum)
+				if(i.videotime<=0){
+					i.videotime=secondNum
+				}
+				i.videoContentSP=cleanContent
+
+				return {
+					...i,
+					videoStatusList: [],
+					imageStatusList: [],
+					superResolution: 2,
+					scrollLeft:0,
+				}
+			})
+		}else{
+			// 按单个分镜
+			for(let item of state.cameraList){
+				for(let n=0; n<data.length; n++){
+					if(item.id==data[n].id){
+						data[n].hasOwnProperty('fenjinContent') && (item.fenjinContent = data[n].fenjinContent);
+						data[n].hasOwnProperty('videoContentSP') && (item.videoContentSP = data[n].videoContentSP);
+						data[n].hasOwnProperty('chatSessionId') && (item.chatSessionId = data[n].chatSessionId);
+						data.splice(n,1);
+						break;
+					}
 				}
 			}
 		}
-		// saveCameraConfig();
+		isSaveCameraConfig && saveCameraConfig();
 	}
 
 	onMounted(() => {
@@ -2618,12 +2707,20 @@
 			state.agentList=data
 		})
 
-		// 获取画风设置内容最新值
+		// 获取融图画风设置内容最新值
 		GetResourceList(1, 100, 9, (resList) => {
 			const rongtuSpId = props.projectConfig.projectConfig.rtConfig.spid;// 融图画风
-			const videoSpId = props.projectConfig.projectConfig.videoConfig.rtSpId;// 视频画风
 			state.spContent.rongtu_huafeng = resList.find(item => item.id == rongtuSpId)?.content;
+			state.spContent.rongtu_huafeng_id = resList.find(item => item.id == rongtuSpId)?.id;
+			state.rongtuSPList = resList;
+		})
+
+		// 获取视频画风设置内容最新值
+		GetResourceList(1, 100, 31, (resList) => {
+			const videoSpId = props.projectConfig.projectConfig.videoConfig.rtSpId;// 视频画风
 			state.spContent.video_huafeng = resList.find(item => item.id == videoSpId)?.content;
+			state.spContent.video_huafeng_id = resList.find(item => item.id == videoSpId)?.id;
+			state.videoSPList = resList;
 		})
 
 		headerLayoutResize();
@@ -2642,7 +2739,6 @@
 	});
 
 	onUnmounted(() => {
-		console.log('index onUnmounted')
 		if(saveintervalID){
 			clearInterval(saveintervalID)
 		}

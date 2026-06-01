@@ -6,167 +6,86 @@
                 <view style="display: flex;width: 100%;">
                     <view class="mainContent">
                         <view class="head">
-                            <view class="tag" style="flex: 1;"><text>当前分镜</text><text
-                                    v-if="cameraList.length > 0 && isMultiple">（{{ cameraList.length }}个）</text></view>
-                            <view class="tag" style="flex: 1;"><text>优化后分镜</text><text
-                                    v-if="newCameraList.length && isMultiple > 0">（{{ newCameraList.length }}个）</text>
-                            </view>
+                            <view class="tag" style="flex: 1;"><text>当前分镜</text><text v-if="cameraList.length > 0">（{{ cameraList.length }}个）</text></view>
+                            <view class="tag" style="flex: 1;"><text>优化后分镜</text><text v-if="newCameraList.length > 0">（{{ newCameraList.length }}个）</text></view>
                         </view>
-
-                        <template v-if="isMultiple">
-                            <view
-                                style="padding: 12px 10px;flex: 1;min-height: 0;display: flex;align-items: flex-start;">
-                                <scroll-view id="cameraList-left" class="cameraList" :scroll-y="true">
-                                    <view class="item" :id="`camera_${index}`" v-for="(item, index) in cameraList"
-                                        :key="item.id">
-                                        <view class="headBar" style="column-gap: 12px;">
-                                            <view style="display: flex;flex:1;justify-content: space-between;">
-                                                <view class="textTag">
-                                                    <image class="img" src="/static/desc_icon.png" mode="heightFix">
-                                                    </image>
-                                                    <text class="text">{{ item.name }}</text>
-                                                </view>
-                                                <view class="textTag" v-if="!isMultiple">
-                                                    <image class="img" src="/static/history.png" mode="heightFix">
-                                                    </image>
-                                                    <text class="text">版本</text>
-                                                    <view style="display: flex;align-items: center;">
-                                                        <view
-                                                            :class="['numberButton', { 'active': index == state.optimizationRecordsIndex }]"
-                                                            v-for="(record, index) in state.optimizationRecords"
-                                                            :key="record.id"
-                                                            @click="handleOptimizationRecordChange(index, record)">{{
-                                                                index + 1 }}</view>
-                                                    </view>
-                                                </view>
-                                            </view>
-                                        </view>
-                                        <view class="content">
-                                            <view style="display: flex;height: 40%;column-gap: 8px;">
-                                                <textarea :maxlength="-1" class="textarea topRadius" @blur="() => { }"
-                                                    :value="item.fenjinContent_version" placeholder="分镜基础内容"
-                                                    disabled></textarea>
-                                            </view>
-                                            <view style="display: flex;height: 60%;column-gap: 8px;">
-                                                <textarea :maxlength="-1" class="textarea bottomRadius"
-                                                    @blur="() => { }" :value="item.videoContentSP_version"
-                                                    placeholder="镜头内容" disabled></textarea>
-                                            </view>
-                                        </view>
-                                    </view>
-                                </scroll-view>
-                                <scroll-view id="cameraList-right" class="cameraList" :scroll-y="true">
-                                    <view class="item" :id="`camera_${index}`" v-for="(item, index) in newCameraList"
-                                        :key="item.id">
-                                        <view class="headBar" style="column-gap: 12px;">
-                                            <view style="display: flex;flex:1;justify-content: space-between;">
-                                                <view class="textTag">
-                                                    <image class="img" src="/static/desc_icon.png" mode="heightFix">
-                                                    </image>
-                                                    <text class="text">{{ item.name }}</text>
-                                                </view>
-                                                <view class="textTag" v-if="!isMultiple">
-                                                    <image class="img" src="/static/history.png" mode="heightFix">
-                                                    </image>
-                                                    <text class="text">版本</text>
-                                                    <view style="display: flex;align-items: center;">
-                                                        <view
-                                                            :class="['numberButton', { 'active': index == state.optimizationRecordsIndex }]"
-                                                            v-for="(record, index) in state.optimizationRecords"
-                                                            :key="record.id"
-                                                            @click="handleOptimizationRecordChange(index, record)">{{
-                                                                index + 1 }}</view>
-                                                    </view>
-                                                </view>
-                                            </view>
-                                        </view>
-                                        <view class="content">
-                                            <view style="display: flex;height: 40%;column-gap: 8px;">
-                                                <textarea :maxlength="-1" class="textarea topRadius"
-                                                    @blur="(e) => { item.fenjinContent = e.detail.value; }"
-                                                    :value="item.fenjinContent" placeholder="优化后的分镜基础内容"></textarea>
-                                            </view>
-                                            <view style="display: flex;height: 60%;column-gap: 8px;">
-                                                <textarea :maxlength="-1" class="textarea bottomRadius"
-                                                    @blur="(e) => { item.videoContentSP = e.detail.value; }"
-                                                    :value="item.videoContentSP" placeholder="优化后的镜头内容"></textarea>
-                                            </view>
-                                        </view>
-                                    </view>
-                                </scroll-view>
-                            </view>
-                        </template>
-                        <template v-else>
-                            <view style="padding: 12px 10px;flex: 1;min-height: 0;">
-                                <!-- @scroll="handleScroll" -->
-                                <scroll-view id="cameraList-left" class="cameraList" ref="cameraListRef"
-                                    :scroll-y="true" :scroll-top="state.cameraScrollViewParams.scrollTop">
-                                    <view class="item" :id="`camera_${index}`" v-for="(item, index) in cameraList"
-                                        :key="item.id">
-                                        <view class="headBar" style="column-gap: 12px;">
-                                            <view style="display: flex;flex:1;justify-content: space-between;">
-                                                <view class="textTag">
-                                                    <image class="img" src="/static/desc_icon.png" mode="heightFix">
-                                                    </image>
-                                                    <text class="text">{{ item.name }}</text>
-                                                </view>
-                                                <view class="textTag" v-if="!isMultiple">
-                                                    <image class="img" src="/static/history.png" mode="heightFix">
-                                                    </image>
-                                                    <text class="text">版本</text>
-                                                    <view style="display: flex;align-items: center;">
-                                                        <view
-                                                            :class="['numberButton', { 'active': index == state.optimizationRecordsIndex }]"
-                                                            v-for="(record, index) in state.optimizationRecords"
-                                                            :key="record.id"
-                                                            @click="handleOptimizationRecordChange(index, record)">{{
-                                                                index + 1 }}</view>
-                                                    </view>
-                                                </view>
-                                            </view>
-                                            <view class="textTag" style="flex: 1;">
+                        <view style="padding: 12px 10px;flex: 1;min-height: 0;display: flex;align-items: flex-start;">
+                            <scroll-view id="cameraList-left" class="cameraList" :scroll-y="true">
+                                <view class="item" :id="`camera_${index}`" v-for="(item, index) in cameraList"
+                                    :key="item.id">
+                                    <view class="headBar" style="column-gap: 12px;">
+                                        <view style="display: flex;flex:1;justify-content: space-between;">
+                                            <view class="textTag">
                                                 <image class="img" src="/static/desc_icon.png" mode="heightFix"></image>
                                                 <text class="text">{{ item.name }}</text>
                                             </view>
-                                        </view>
-                                        <view class="content">
-                                            <view style="display: flex;height: 40%;column-gap: 8px;">
-                                                <textarea :maxlength="-1" class="textarea topRadius" @blur="() => { }"
-                                                    :value="item.fenjinContent_version" placeholder="分镜基础内容"
-                                                    disabled></textarea>
-                                                <textarea :maxlength="-1" class="textarea topRadius"
-                                                    @blur="(e) => { item.fenjinContent = e.detail.value; }"
-                                                    :value="item.fenjinContent" placeholder="优化后的分镜基础内容"></textarea>
-                                            </view>
-                                            <view style="display: flex;height: 60%;column-gap: 8px;">
-                                                <textarea :maxlength="-1" class="textarea bottomRadius"
-                                                    @blur="() => { }" :value="item.videoContentSP_version"
-                                                    placeholder="镜头内容" disabled></textarea>
-                                                <textarea :maxlength="-1" class="textarea bottomRadius"
-                                                    @blur="(e) => { item.videoContentSP = e.detail.value; }"
-                                                    :value="item.videoContentSP" placeholder="优化后的镜头内容"></textarea>
+                                            <view class="textTag" v-if="!isMultiple">
+                                                <image class="img" src="/static/history.png" mode="heightFix"></image>
+                                                <text class="text">版本</text>
+                                                <view style="display: flex;align-items: center;">
+                                                    <view
+                                                        :class="['numberButton', { 'active': index == state.optimizationRecordsIndex }]"
+                                                        v-for="(record, index) in state.optimizationRecords"
+                                                        :key="record.id"
+                                                        @click="handleOptimizationRecordChange(index, record)">{{
+                                                            index + 1 }}</view>
+                                                </view>
                                             </view>
                                         </view>
                                     </view>
-                                </scroll-view>
-                            </view>
-                        </template>
-
-                        <view class="footer" style="justify-content: flex-end;">
-                            <template v-if="!isMultiple">
-                                <view class="textTag" style="width: 100px;">
-                                    <image class="img" src="/static/desc_icon.png" mode="heightFix"></image>
-                                    <text class="text">分镜优化：</text>
+                                    <view class="content">
+                                        <view style="display: flex;height: 40%;column-gap: 8px;">
+                                            <textarea :maxlength="-1" class="textarea topRadius" @blur="() => { }"
+                                                :value="item.fenjinContent_version" placeholder="分镜基础内容"
+                                                disabled></textarea>
+                                        </view>
+                                        <view style="display: flex;height: 60%;column-gap: 8px;">
+                                            <textarea :maxlength="-1" class="textarea bottomRadius" @blur="() => { }"
+                                                :value="item.videoContentSP_version" placeholder="镜头内容"
+                                                disabled></textarea>
+                                        </view>
+                                    </view>
                                 </view>
-                                <!-- @click="handleCameraTagClick(cameraIndex)" -->
-                                <scroll-view scroll-x
-                                    style="flex: 1;white-space: nowrap;min-width: 0;align-items: flex-start;padding: 0 12px;">
-                                    <view class="textButton" v-for="(cameraItem, cameraIndex) in cameraList"
-                                        :key="cameraItem.id" :class="{ 'active': cameraIndex == state.curCameraIndex }">
-                                        {{ cameraItem.name }}
+                            </scroll-view>
+                            <scroll-view id="cameraList-right" class="cameraList" :scroll-y="true">
+                                <view class="item" :id="`camera_${index}`" v-for="(item, index) in newCameraList"
+                                    :key="item.id">
+                                    <view class="headBar" style="column-gap: 12px;">
+                                        <view style="display: flex;flex:1;justify-content: space-between;">
+                                            <view class="textTag">
+                                                <image class="img" src="/static/desc_icon.png" mode="heightFix"></image>
+                                                <text class="text">{{ item.name }}</text>
+                                            </view>
+                                            <view class="textTag" v-if="!isMultiple">
+                                                <image class="img" src="/static/history.png" mode="heightFix"></image>
+                                                <text class="text">版本</text>
+                                                <view style="display: flex;align-items: center;">
+                                                    <view
+                                                        :class="['numberButton', { 'active': index == state.optimizationRecordsIndex }]"
+                                                        v-for="(record, index) in state.optimizationRecords"
+                                                        :key="record.id"
+                                                        @click="handleOptimizationRecordChange(index, record)">{{
+                                                            index + 1 }}</view>
+                                                </view>
+                                            </view>
+                                        </view>
                                     </view>
-                                </scroll-view>
-                            </template>
+                                    <view class="content">
+                                        <view style="display: flex;height: 40%;column-gap: 8px;">
+                                            <textarea :maxlength="-1" class="textarea topRadius"
+                                                @blur="(e) => { item.fenjinContent = e.detail.value; }"
+                                                :value="item.fenjinContent" placeholder="优化后的分镜基础内容"></textarea>
+                                        </view>
+                                        <view style="display: flex;height: 60%;column-gap: 8px;">
+                                            <textarea :maxlength="-1" class="textarea bottomRadius"
+                                                @blur="(e) => { item.videoContentSP = e.detail.value; }"
+                                                :value="item.videoContentSP" placeholder="优化后的镜头内容"></textarea>
+                                        </view>
+                                    </view>
+                                </view>
+                            </scroll-view>
+                        </view>
+                        <view class="footer">
                             <view
                                 style="background-color: #409EFF;color: #fff;width: 140px;height: 36px;line-height: 36px;text-align: center;border-radius: 8px;cursor: pointer;"
                                 @click="handleCover">
@@ -236,17 +155,7 @@
                                                 @click.stop="() => { state.styleSPName = ''; state.styleSPContent = '' }">
                                             </image>
                                         </view>
-                                        <view class="menuButton dropdownBtn" @click="state.modelSelectorVisible = !state.modelSelectorVisible">
-                                            <text>{{ state.modelName }}</text>
-                                            <scroll-view :class="['list', { 'visible':state.modelSelectorVisible}]"
-                                                scroll-y style="width: 230px;">
-                                                <view
-                                                    :class="['item', {'active': model.id == state.modelId }]"
-                                                    v-for="(model, modelIndex) in agentList_word"
-                                                    :key="model.id" @click="handleModelChange(model)">{{
-                                                        model.name }}</view>
-                                            </scroll-view>
-                                        </view>
+                                        <view class="menuButton">豆包seed2.0</view>
                                     </view>
                                     <view class="sendButton" @click="onSend()"></view>
                                 </view>
@@ -275,6 +184,7 @@ import { debounce } from "lodash";
 import { AIChat } from "@/common/AIAgentForServer.js";
 import PopupSP from "@/components/popupSP.vue";
 import { GetResourceList } from '@/common/ResourceMgr'
+import { multiply } from "lodash";
 import {
     newCameraConfig
 } from '@/common/ProjectMgr';
@@ -311,13 +221,9 @@ const props = defineProps({
         required: true,
         default: ''
     },
-    episodesId: {
+    episodesId:{
         type: [String, Number],
         default: ''
-    },
-    agentList:{
-        type: Array,
-        default: () => []
     },
     episodeContent: {
         type: String,
@@ -329,13 +235,9 @@ const props = defineProps({
     }
 });
 
-const agentList_word = computed(() => {
-    return props.agentList.filter(i=>i.modelType==5)
-})
-
 // 是否按集入口
 const isMultiple = computed(() => {
-    return props.data?.length > 1 && props.episodeContent?.trim() != ''
+    return props.data?.length > 1 && props.episodeContent != ''
 })
 
 const instance = getCurrentInstance();
@@ -392,10 +294,6 @@ const state = reactive({
 
     historyContextList: [], // 历史上下文列表
     historyContextListVisible: false, // 历史上下文列表显示状态
-
-    modelId: '', // 优化模型id
-    modelName:'', // 优化模型名称
-    modelSelectorVisible: false, // 模型选择菜单显示状态
 
     pageSize: 20, // 聊天记录分页大小
     pageNum: 1, // 聊天记录分页页码
@@ -469,10 +367,10 @@ const startOptimization = async (index) => {
     let tempSP;
 
     if (isMultiple.value) {
-        tempSP = JSON.stringify(props.data.map(i => {
+        tempSP = JSON.stringify(props.data.map(i=>{
             return {
-                '分镜基础信息': i.fenjinContent,
-                '分镜内容': i.videoContentSP,
+                分镜基础信息:i.fenjinContent,
+                分镜内容:i.videoContentSP,
             }
         }))
     } else {
@@ -487,13 +385,12 @@ const startOptimization = async (index) => {
 
     let allContent = tempSP;
     state.optimizationSPContent && (allContent += ('\n' + state.optimizationSPContent))
-    state.styleSPContent && (allContent += ('\n' + state.styleSPContent))
     state.textareaValue && (allContent += ('\n' + state.textareaValue))
 
     let params = {
         projectId: props.projectId,
         episodesId: props.episodesId,
-        modelId: state.modelId,
+        modelId: 18,
         max_tokens: 32768,
         messages: [{
             role: "user",
@@ -505,12 +402,8 @@ const startOptimization = async (index) => {
             ]
         }],
     }
-
-    // 单个分镜补上分镜id
     item && (params.cameraId = item.id);
-    
-    state.textareaValue = "";
-    
+
     AIChat(params).then(async (message) => {
         let videoContentSP = '';
         let fenjinContent = '';
@@ -542,12 +435,13 @@ const startOptimization = async (index) => {
                     newCameras.push(tempCameraConfig)
                 }
                 newCameraList.value = newCameras;
+                console.log('newCameraList.value=', newCameraList.value)
 
                 addChatRecoed({
                     type: 2,
                     content: `优化结果已完成\n\n${message}`
                 });
-
+                
             } else {
                 let parts = message?.split('###');
                 parts = parts.map(part => part.trim()).filter(part => part !== '');
@@ -565,7 +459,7 @@ const startOptimization = async (index) => {
                     type: 2,
                     content: `分镜【${item.name}】优化结果已完成\n\n${fenjinContent}\n${videoContentSP}`
                 });
-            }
+            }      
         }
         catch (error) {
             console.warn('解析镜头内容失败', error)
@@ -599,6 +493,8 @@ const onSend = async () => {
         type: 1,
         content: state.textareaValue
     });
+
+    state.textareaValue = "";
 
     state.requesting = true;
 
@@ -636,9 +532,7 @@ const handleCameraTagClick = (index) => {
 
 // 点击覆盖按钮
 const handleCover = () => {
-    const { projectId, episodesId, id } = cameraList.value[state.curCameraIndex];
-
-    if (newCameraList.value.length == 0 && isMultiple.value) {
+    if(newCameraList.value.length==0){
         uni.showToast({
             title: '请先生成优化分镜内容',
             icon: 'none'
@@ -654,31 +548,8 @@ const handleCover = () => {
     }
 
     const fn = async () => {
-        // 如果是单独优化，增加版本
-        if (cameraList.value.length == 1) {
-            const cameraItem = cameraList.value[state.curCameraIndex]
-            const fenjingContent = cameraItem.fenjinContent;
-            const videoContentSP = cameraItem.videoContentSP;
-            postRequest(APIPath.userChatRecordMemoirs, {
-                title: new Date().toLocaleString(),
-                type: 1,
-                content: JSON.stringify({
-                    fenjingContent,
-                    videoContentSP
-                }),
-                projectId,
-                episodesId,
-                cameraId: id,
-            }, (result) => {
-                if (result.code == 200) {
-                    emit('update', cameraList.value, true)
-                    emit('close')
-                }
-            })
-        } else {
-            emit('update', newCameraList.value, true)
-            emit('close')
-        }
+        emit('update', newCameraList.value)
+        emit('close')
     }
 
     if (existEmpty) {
@@ -930,22 +801,8 @@ const handleContextChange = (item, index) => {
     })
 }
 
-const handleModelChange = (modelInfo) => {
-    state.modelId = modelInfo.id
-    state.modelName = modelInfo.name
-}
-
 onMounted(async () => {
-    state.modelId = agentList_word.value[0].id
-    state.modelName = agentList_word.value[0].name
-
     // 获取深化AgentSP并设默认值
-    let typeId;
-    if(location.origin.includes('assetpro.meiai.store')){
-        typeId = isMultiple.value ? 5483 : 5482;
-    }else{
-        typeId = isMultiple.value ? 6012 : 5643;
-    }
     GetResourceList(1, 200, '29', (resList) => {
         state.listData = resList.map(i => {
             return {
@@ -955,7 +812,7 @@ onMounted(async () => {
             }
         })
 
-        let firstAgentSP = state.listData.find(i => i.id == typeId)
+        let firstAgentSP = state.listData.find(i => i.id == 6012)
         firstAgentSP = firstAgentSP ? firstAgentSP : state.listData[0]
         if (firstAgentSP) {
             state.optimizationSPContent = firstAgentSP.content;
@@ -964,17 +821,27 @@ onMounted(async () => {
         }
     })
 
-    initChat();
+    initChat()
 
     await nextTick();
-
-    // computePopupHeight()
-    // window.addEventListener('resize', computePopupHeight)
+    // setTimeout(() => {
+    //     const query = uni.createSelectorQuery();
+    //     query
+    //         .select("#cameraList")
+    //         .boundingClientRect((data) => {
+    //             console.log("得到布局位置信息", data);
+    //         })
+    //         .exec();
+    // }, 2000);
+    computePopupHeight()
+    window.addEventListener('resize', computePopupHeight)
 })
 
 onBeforeUnmount(() => {
-    // window.removeEventListener('resize', computePopupHeight)
+    window.removeEventListener('resize', computePopupHeight)
 })
+
+
 
 </script>
 <style scoped lang="scss">
@@ -1305,6 +1172,7 @@ onBeforeUnmount(() => {
         align-items: center;
         margin-top: 12px;
         margin-bottom: 6px;
+        justify-content: flex-end;
 
         .textButton {
             display: inline-block;
@@ -1378,7 +1246,7 @@ onBeforeUnmount(() => {
         right: 0;
         bottom: 0;
         transform: translateY(-34px);
-        box-shadow: 0 0px 12px rgba(80, 80, 80, 0.2);
+        box-shadow: 0 0px 12px rgba(0, 0, 0, 0.4);
         border-radius: 6px;
         overflow: hidden;
         visibility: hidden;
@@ -1399,7 +1267,7 @@ onBeforeUnmount(() => {
             border-bottom: 1px solid #f7f7f7;
 
             &.active {
-                background-color: rgb(255 203 94);
+                background-color: rgb(248, 186, 56);
                 color: #333;
             }
 

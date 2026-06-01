@@ -54,7 +54,7 @@
 .script-top-left-item {
 	width: 27.6%;
 	height: 64.3%;
-	border-radius: 8rpx;
+	border-radius: 12rpx;
 	background: linear-gradient(0deg, #F3F3F3, #F3F3F3), #FFFFFF;
 	font-size: 28rpx;
 	font-size: #333333;
@@ -101,12 +101,16 @@
 	opacity: 0.8;
 }
 
+.primaryColor{
+	background: #2A2A2A;
+}
+
 .blueColor {
 	background: linear-gradient(0deg, #409EFF, #409EFF), #FFFFFF;
 }
 
 .yellowColor {
-	background: linear-gradient(90deg, #F8BA38 0%, #FFCA5A 100%);
+	background: #FFDC00;
 }
 
 .script-item {
@@ -187,7 +191,7 @@
 	width: 48%;
 	/* 两个按钮一行，中间留隙 */
 	height: 84rpx;
-	border-radius: 8rpx;
+	border-radius: 16rpx;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -195,7 +199,7 @@
 	color: #333333;
 	background: linear-gradient(0deg, #E7E7E7, #E7E7E7), linear-gradient(90deg, #F8BA38 0%, #FFCA5A 100%), #409EFF;
 	cursor: pointer;
-	transition: all 0.2s;
+	transition: background 0.2s;
 }
 
 .script-btn:hover {
@@ -215,11 +219,16 @@
 	background: transparent !important;
 	border: 2rpx solid #FF5757;
 	box-sizing: border-box;
+	transition: all 50ms;
+}
+
+.btn-delete:hover{
+	border-width: 4rpx;
 }
 
 /* 生成故事板按钮 */
 .btn-generate {
-	background: linear-gradient(90deg, #F8BA38 0%, #FFCA5A 100%) !important;
+	background: #FFDC00 !important;
 	font-weight: 500;
 }
 
