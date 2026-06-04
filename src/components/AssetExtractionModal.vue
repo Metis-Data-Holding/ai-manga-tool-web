@@ -1720,6 +1720,14 @@ function close() {
     color: #111827;
   }
 
+  &:disabled {
+    background: #e5e7eb !important;
+    border: 1px solid #d1d5db;
+    color: #8a94a6 !important;
+    cursor: not-allowed;
+    opacity: 0.72;
+  }
+
   &.wide {
     width: 190px;
   }
