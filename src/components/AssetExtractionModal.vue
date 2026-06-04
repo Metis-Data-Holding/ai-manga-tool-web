@@ -157,8 +157,8 @@
         >
           {{ stepConfirmLabel }}
         </button>
-        <button class="footer-button confirm" :disabled="state.confirming" @click="confirmImport">
-          {{ state.confirming ? "导入中" : "确认导入" }}
+        <button class="footer-button confirm" :disabled="confirmImportDisabled" @click="confirmImport">
+          {{ confirmImportLabel }}
         </button>
       </view>
 
@@ -370,6 +370,26 @@ const selectedSkillTitle = computed(() => {
 });
 const currentStepCode = computed(() => state.workflowState?.currentStep || "");
 const currentStepLabel = computed(() => state.workflowState?.currentStepLabel || "");
+const confirmAssetCount = computed(() => buildConfirmAssets().length);
+const confirmImportDisabled = computed(() => {
+  return Boolean(
+    state.confirming
+    || confirmAssetCount.value === 0
+    || (state.selectedSkillId !== null && state.workflowState?.finished !== true)
+  );
+});
+const confirmImportLabel = computed(() => {
+  if (state.confirming) {
+    return "导入中";
+  }
+  if (state.selectedSkillId !== null && state.workflowState?.finished !== true) {
+    return "待完成提炼";
+  }
+  if (confirmAssetCount.value === 0) {
+    return "暂无可导入资产";
+  }
+  return "确认导入";
+});
 const showStepConfirmButton = computed(() => {
   return Boolean(
     selectedSkill.value
