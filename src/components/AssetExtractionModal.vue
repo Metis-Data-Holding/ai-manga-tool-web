@@ -157,7 +157,11 @@
         >
           {{ stepConfirmLabel }}
         </button>
-        <button class="footer-button confirm" :disabled="confirmImportDisabled" @click="confirmImport">
+        <button
+          :class="['footer-button', 'confirm', { disabled: confirmImportDisabled }]"
+          :disabled="confirmImportDisabled"
+          @click="confirmImport"
+        >
           {{ confirmImportLabel }}
         </button>
       </view>
@@ -1720,12 +1724,15 @@ function close() {
     color: #111827;
   }
 
+  &.disabled,
+  &[disabled],
   &:disabled {
     background: #e5e7eb !important;
     border: 1px solid #d1d5db;
     color: #8a94a6 !important;
     cursor: not-allowed;
     opacity: 0.72;
+    pointer-events: none;
   }
 
   &.wide {
